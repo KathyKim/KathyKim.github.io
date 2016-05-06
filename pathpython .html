@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+岛主夫人开始学Python了，每天都记录一下&回顾一下吧。
+
+一开始写的代码应该会很难看吧，恩，那这个「最难看代码」的宝座我先坐一会儿，等我心情好再让给别人。
+
+![about 'Ugly'](http://ww1.sinaimg.cn/large/005BXWnJgw1f3m0qwvwpkj30dc0dwt9c.jpg)
+So happy U are not a MIRROR！
+
+##Outline
+- 5月6日   
+Python基本语法 list tuple set dit function等 大概看了3h
+- 5月7日
+
+
+##Details
+###5月6日
+
+- 下载好了Python (啊，我这个破网速啊）
+- 用终端写了个hello World
+```
+KathydeMacBook:~ Kathy$ cd Python/test 
+KathydeMacBook:test Kathy$ vim input.py
+KathydeMacBook:test Kathy$ python3 input.py
+```
+结果如下：
+```
+hello, Kathy
+```
+
+- 看Python基本教程
+
+
+1.Python内置的有序集合list和tuple之间的区别，list变量与tuple变量均为指针，但是前者可变，后者不可变。嵌入list变量的tuple变量虽然可以随着list变量的变化而变化，但是tuple变量作为指针指向的那个地方是不变的。
+
+```
+>>> t = ('a', 'b', ['A', 'B'])
+>>> t[2][0] = 'X'
+>>> t[2][1] = 'Y'
+>>> t
+('a', 'b', ['X', 'Y'])
+```
+
+2.关于可变&不可变    
+str是不变变量，但是list是可变变量。例如，a是一个list变量，a.sort将a本身进行了排序并且覆盖了原先的a, 但是若a是一个str, a.replace('x','y')只是生成一个新字符串并返回，str变量a作为指针指向的变量依旧是未替代前的那一个。
+
+3.关于dit和set    
+key都要求**唯一&不可变**
+dit 用花括号，而且有冒号，无需表明dit
+set 用圆括号
+```
+>>> dit_test= {'Onel': 1, 'Two': 2}
+>>> set_test = set([1,2,3])
+>>> dit_test 
+{'Onel': 1, 'Two': 2}
+>>> set_test
+{1, 2, 3}
+
+```
+> 使用key-value存储结构的dict在Python中非常有用，选择不可变对象作为key很重要（不管是指向不可变，还包括指向的内容也不可变），最常用的key是字符串。    
+Actually, set()只是一个函数，函数的参数是一个list，函数的返回值是set类型的对象，与tuple类似，再往后看，参数只要求是Iterable就可以 ----by 廖雪峰
+
+
+```
+# 有个比较好看的代码
+s = d.get('%s' % input('姓名: '), '学生不存在')
+```
+
+4.函数   
+
+- 可以直接在终端中的python3的环境下写
+- 可以在终端中写个.py的文件，然后在python3的环境下从这个file中抽出函数，然后直接用：）**恩，这个地方把from写成了form，估计掉了几根头发吧**
+- Python中函数的返回值是一个tuple，多个变量可以同时接收一个tuple，按位置赋给对应的值。
+
+
+
+
+
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "pathpython .html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
