@@ -107,7 +107,85 @@ s = d.get('%s' % input('姓名: '), '学生不存在')
 </div>
 <div class="entry" id="main">
 <!-- content -->
+<p>岛主夫人开始学Python了，每天都记录一下&amp;回顾一下吧。</p>
 
+<p>一开始写的代码应该会很难看吧，恩，那这个「最难看代码」的宝座我先坐一会儿，等我心情好再让给别人。</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/005BXWnJgw1f3m0qwvwpkj30dc0dwt9c.jpg" alt="about 'Ugly'" title="">
+So happy U are not a MIRROR！</p>
+
+<h2 id="outline">Outline</h2>
+
+<ul>
+<li>5月6日 <br>
+Python基本语法 list tuple set dit function等 大概看了3h</li>
+<li>5月7日</li>
+</ul>
+
+<h2 id="details">Details</h2>
+
+<h3 id="56">5月6日</h3>
+
+<ul>
+<li>下载好了Python (啊，我这个破网速啊）</li>
+<li>用终端写了个hello World</li>
+</ul>
+
+<pre><code>KathydeMacBook:~ Kathy$ cd Python/test 
+KathydeMacBook:test Kathy$ vim input.py
+KathydeMacBook:test Kathy$ python3 input.py
+</code></pre>
+
+<p>结果如下：</p>
+
+<pre><code>hello, Kathy
+</code></pre>
+
+<ul>
+<li>看Python基本教程</li>
+</ul>
+
+<p>1.Python内置的有序集合list和tuple之间的区别，list变量与tuple变量均为指针，但是前者可变，后者不可变。嵌入list变量的tuple变量虽然可以随着list变量的变化而变化，但是tuple变量作为指针指向的那个地方是不变的。</p>
+
+<pre><code>&gt;&gt;&gt; t = ('a', 'b', ['A', 'B'])
+&gt;&gt;&gt; t[2][0] = 'X'
+&gt;&gt;&gt; t[2][1] = 'Y'
+&gt;&gt;&gt; t
+('a', 'b', ['X', 'Y'])
+</code></pre>
+
+<p>2.关于可变&amp;不可变 <br>
+str是不变变量，但是list是可变变量。例如，a是一个list变量，a.sort将a本身进行了排序并且覆盖了原先的a, 但是若a是一个str, a.replace('x','y')只是生成一个新字符串并返回，str变量a作为指针指向的变量依旧是未替代前的那一个。</p>
+
+<p>3.关于dit和set <br>
+key都要求<strong>唯一&amp;不可变</strong>
+dit 用花括号，而且有冒号，无需表明dit
+set 用圆括号</p>
+
+<pre><code>&gt;&gt;&gt; dit_test= {'Onel': 1, 'Two': 2}
+&gt;&gt;&gt; set_test = set([1,2,3])
+&gt;&gt;&gt; dit_test 
+{'Onel': 1, 'Two': 2}
+&gt;&gt;&gt; set_test
+{1, 2, 3}
+</code></pre>
+
+<blockquote>
+  <p>使用key-value存储结构的dict在Python中非常有用，选择不可变对象作为key很重要（不管是指向不可变，还包括指向的内容也不可变），最常用的key是字符串。 <br>
+  Actually, set()只是一个函数，函数的参数是一个list，函数的返回值是set类型的对象，与tuple类似，再往后看，参数只要求是Iterable就可以 ----by 廖雪峰</p>
+</blockquote>
+
+<pre><code># 有个比较好看的代码
+s = d.get('%s' % input('姓名: '), '学生不存在')
+</code></pre>
+
+<p>4.函数   </p>
+
+<ul>
+<li>可以直接在终端中的python3的环境下写</li>
+<li>可以在终端中写个.py的文件，然后在python3的环境下从这个file中抽出函数，然后直接用：）<strong>恩，这个地方把from写成了form，估计掉了几根头发吧</strong></li>
+<li>Python中函数的返回值是一个tuple，多个变量可以同时接收一个tuple，按位置赋给对应的值。</li>
+</ul>
 <!-- content end -->
 </div>
 <br>
