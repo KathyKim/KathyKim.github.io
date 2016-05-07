@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+
+关于如何确定样本的组距和组数，查了下资料，基本上是这样的  
+
+##偏常识
+- 共识：考虑样本量。在样本量不是特别大的情况下，每组包含的频数平均为10个或10个以上：  
+  - 样本量少于50时，分为5-6组
+  - 样本量大于100时，分为8-15组
+- 更精确些：考虑数据的波动——标准差。如果数据波动很小，用大的组距显然无法得到满意的组数（每组样本量偏多&组数偏少），所以一般认为「组距大小不超过标准差的$1/4$，当然这也不是绝对的，如果采用$1/4$这个门槛得到的组数偏多，也可以让组距更大些——用标准差的$1/3-1/2$」
+
+##理论支撑
+理论上有这么一套体系，估计很多书上给出的建议组数的大小都是根据这套理论推导出来的。
+
+- 组距a：为了保证频数分布表有一个凸起，这里有个理论支持，就是统计中，如果要估计总体均值，计算出样本均值$\hat{x}$后，以它为中心确定一个95%置信区间，可以得到总体均值有95%的概率落在这个区间中。通常把这个置信区间的宽度当做组距。
+- 样本可能取到的区间长度b（超过这个区间的值被取到的可能性很小，所以就不讨论），这个也是从特定统计量置信区间的角度去考虑的，类似上面那个思路。但是一般用$max-min$也就够了
+- 根据b/a的值便可以得到组数了。
+
+`ps：a，b这两个值取决于样本量n，置信度，样本均值，样本方差，所以考虑得还是很完善的。`
+
+
+
+##模拟一下
+
+关于被咨询那个习题。给出的数据集是：
+$29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36$
+
+> 问：画频率分布图时，以2为组距效果好还是以5为组距效果好。
+
+恩，做了下计算:
+
+- "最大值为: 40 最小值为: 28 样本量为: 44"
+- "均值的置信区间为 ( 33.76 , 35.84 )"
+- "按照方差的1/4作为组距时，组数为: 14 此时组距为: 0.86"
+- "按照方差的1/3作为组距时，组数为: 11 此时组距为: 1.14"
+- "按照理论b/a计算时，组数为: 6 此时组距为: 2.08"
+
+`ps：不用心算的感觉真是太好了(U •́ .̫ •̀ U)`
+
+所以，把2作为组距的处理更接近理论值，此时组数为6，符合常识（当然嘞~因为常识就是从理论推导出来的）
+
+在组距为2的情况下，频数图是这样的，效果不错
+
+![组距为2](http://ww3.sinaimg.cn/large/005BXWnJgw1f3mjxy85nxj311c0qowfj.jpg)
+
+
+在组距为5的情况下，频数图是这样的,效果不太好
+
+![组距为5](http://ww1.sinaimg.cn/large/005BXWnJgw1f3mjyn6tzgj311c0qoq3r.jpg)
+
+`ps:为什么这两张图这么难看呢，因为岛主夫人在周六的清晨肚子有点饿，想赶紧弄然去吃饭`
+
+##代码如下，用R编译
+```{
+x <- c(29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36)
+max <- max(x)
+min <- min(x)
+n <- length(x)
+print(paste('最大值为:', max, '最小值为:', min, '样本量为:', n))
+
+mean1 <- round(t.test(x)$conf.int[[1]],2)
+mean2 <- round(t.test(x)$conf.int[[2]],2)
+print(paste('均值的置信区间为','(',mean1,',',mean2,')'))
+
+a <- round(mean2-mean1,2)
+b <- max(x)-min(x)
+sd_4 <- round(sd(x)/4,2)
+sd_3 <- round(sd(x)/3,2)
+#按照标准差计算
+group_num_sd_4 <- ceiling(b/sd_4)
+group_num_sd_3 <- ceiling(b/sd_3)
+#按照理论值计算
+group_num_interval <- ceiling(b/a)
+
+print (paste('按照标准差的1/4作为组距时，组数为:', group_num_sd_4, '此时组距为:', sd_4))
+print (paste('按照标准差的1/3作为组距时，组数为:', group_num_sd_3, '此时组距为:', sd_3))
+print (paste('按照理论b/a计算时，组数为:', group_num_interval, '此时组距为:', a))
+
+#在组距为2的情况下，频数图是这样的，效果不错
+
+breaks <- seq (min(x),max(x),by=2)
+hist(x, breaks=breaks)
+
+#在组距为5的情况下，频数图是这样的,效果不太好
+
+breaks <- c(seq (min(x),max(x),by=5),43)
+hist(x, breaks=breaks)
+```
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>关于如何确定样本的组距和组数，查了下资料，基本上是这样的  </p>
+
+<h2 id="">偏常识</h2>
+
+<ul>
+<li>共识：考虑样本量。在样本量不是特别大的情况下，每组包含的频数平均为10个或10个以上： <br>
+<ul><li>样本量少于50时，分为5-6组</li>
+<li>样本量大于100时，分为8-15组</li></ul></li>
+<li>更精确些：考虑数据的波动——标准差。如果数据波动很小，用大的组距显然无法得到满意的组数（每组样本量偏多&amp;组数偏少），所以一般认为「组距大小不超过标准差的<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4414-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74461" role="math" style="width: 1.629em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.324em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1001.273em, 2.696em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74462"><span class="mn" id="MathJax-Span-74463" style="font-family: STIXGeneral-Regular;">1</span><span class="texatom" id="MathJax-Span-74464"><span class="mrow" id="MathJax-Span-74465"><span class="mo" id="MathJax-Span-74466" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-74467" style="font-family: STIXGeneral-Regular;">4</span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>4</mn></math></span></span><script type="math/tex" id="MathJax-Element-4414">1/4</script>，当然这也不是绝对的，如果采用<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4415-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74468" role="math" style="width: 1.629em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.324em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1001.273em, 2.696em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74469"><span class="mn" id="MathJax-Span-74470" style="font-family: STIXGeneral-Regular;">1</span><span class="texatom" id="MathJax-Span-74471"><span class="mrow" id="MathJax-Span-74472"><span class="mo" id="MathJax-Span-74473" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-74474" style="font-family: STIXGeneral-Regular;">4</span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>4</mn></math></span></span><script type="math/tex" id="MathJax-Element-4415">1/4</script>这个门槛得到的组数偏多，也可以让组距更大些——用标准差的<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4416-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;3&lt;/mn&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74475" role="math" style="width: 4.728em; display: inline-block;"><span style="display: inline-block; position: relative; width: 3.814em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1003.763em, 2.696em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74476"><span class="mn" id="MathJax-Span-74477" style="font-family: STIXGeneral-Regular;">1</span><span class="texatom" id="MathJax-Span-74478"><span class="mrow" id="MathJax-Span-74479"><span class="mo" id="MathJax-Span-74480" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-74481" style="font-family: STIXGeneral-Regular;">3</span><span class="mo" id="MathJax-Span-74482" style="font-family: STIXGeneral-Regular; padding-left: 0.257em;">−</span><span class="mn" id="MathJax-Span-74483" style="font-family: STIXGeneral-Regular; padding-left: 0.257em;">1</span><span class="texatom" id="MathJax-Span-74484"><span class="mrow" id="MathJax-Span-74485"><span class="mo" id="MathJax-Span-74486" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-74487" style="font-family: STIXGeneral-Regular;">2</span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>3</mn><mo>−</mo><mn>1</mn><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mn>2</mn></math></span></span><script type="math/tex" id="MathJax-Element-4416">1/3-1/2</script>」</li>
+</ul>
+
+<h2 id="">理论支撑</h2>
+
+<p>理论上有这么一套体系，估计很多书上给出的建议组数的大小都是根据这套理论推导出来的。</p>
+
+<ul>
+<li>组距a：为了保证频数分布表有一个凸起，这里有个理论支持，就是统计中，如果要估计总体均值，计算出样本均值<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4417-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mover&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x005E;&lt;/mo&gt;&lt;/mover&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74488" role="math" style="width: 0.663em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.511em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.324em, 1000.511em, 2.34em, -999.947em); top: -2.132em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74489"><span class="texatom" id="MathJax-Span-74490"><span class="mrow" id="MathJax-Span-74491"><span class="munderover" id="MathJax-Span-74492"><span style="display: inline-block; position: relative; width: 0.46em; height: 0px;"><span style="position: absolute; clip: rect(3.407em, 1000.46em, 4.169em, -999.947em); top: -3.961em; left: 0.003em;"><span class="mi" id="MathJax-Span-74493" style="font-family: STIXGeneral-Italic;">x<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -4.012em; left: 0.104em;"><span style="height: 0.003em; vertical-align: 0.003em; width: 0.409em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-74494" style="font-family: STIXGeneral-Regular;">̂&nbsp;<span style="height: 0.003em; vertical-align: 0.003em; margin-left: -0.607em;"></span></span><span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.188em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.066em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mover><mi>x</mi><mo stretchy="false">^</mo></mover></mrow></math></span></span><script type="math/tex" id="MathJax-Element-4417">\hat{x}</script>后，以它为中心确定一个95%置信区间，可以得到总体均值有95%的概率落在这个区间中。通常把这个置信区间的宽度当做组距。</li>
+<li>样本可能取到的区间长度b（超过这个区间的值被取到的可能性很小，所以就不讨论），这个也是从特定统计量置信区间的角度去考虑的，类似上面那个思路。但是一般用<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4418-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74495" role="math" style="width: 5.541em; display: inline-block;"><span style="display: inline-block; position: relative; width: 4.474em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1004.423em, 2.696em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74496"><span class="mi" id="MathJax-Span-74497" style="font-family: STIXGeneral-Italic;">m</span><span class="mi" id="MathJax-Span-74498" style="font-family: STIXGeneral-Italic;">a</span><span class="mi" id="MathJax-Span-74499" style="font-family: STIXGeneral-Italic;">x<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-74500" style="font-family: STIXGeneral-Regular; padding-left: 0.257em;">−</span><span class="mi" id="MathJax-Span-74501" style="font-family: STIXGeneral-Italic; padding-left: 0.257em;">m</span><span class="mi" id="MathJax-Span-74502" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-74503" style="font-family: STIXGeneral-Italic;">n</span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 0.941em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>m</mi><mi>a</mi><mi>x</mi><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi></math></span></span><script type="math/tex" id="MathJax-Element-4418">max-min</script>也就够了</li>
+<li>根据b/a的值便可以得到组数了。</li>
+</ul>
+
+<p><code>ps：a，b这两个值取决于样本量n，置信度，样本均值，样本方差，所以考虑得还是很完善的。</code></p>
+
+<h2 id="">模拟一下</h2>
+
+<p>关于被咨询那个习题。给出的数据集是：
+<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4419-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;29&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;39&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;35&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;33&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;39&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;28&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;33&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;35&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;31&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;31&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;37&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;32&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;38&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;36&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;31&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;39&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;32&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;38&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;37&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;34&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;29&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;34&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;38&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;32&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;35&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;36&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;33&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;29&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;32&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;35&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;36&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;37&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;39&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;38&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;40&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;38&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;37&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;39&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;28&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;34&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;33&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;40&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;36&lt;/mn&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mn&gt;36&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-74504" role="math" style="width: 79.372em; display: inline-block;"><span style="display: inline-block; position: relative; width: 64.535em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.679em, 1064.484em, 2.848em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-74505"><span class="mn" id="MathJax-Span-74506" style="font-family: STIXGeneral-Regular;">29</span><span class="mo" id="MathJax-Span-74507" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74508" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">39</span><span class="mo" id="MathJax-Span-74509" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74510" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">35</span><span class="mo" id="MathJax-Span-74511" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74512" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">33</span><span class="mo" id="MathJax-Span-74513" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74514" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">39</span><span class="mo" id="MathJax-Span-74515" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74516" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">28</span><span class="mo" id="MathJax-Span-74517" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74518" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">33</span><span class="mo" id="MathJax-Span-74519" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74520" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">35</span><span class="mo" id="MathJax-Span-74521" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74522" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">31</span><span class="mo" id="MathJax-Span-74523" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74524" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">31</span><span class="mo" id="MathJax-Span-74525" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74526" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">37</span><span class="mo" id="MathJax-Span-74527" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74528" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">32</span><span class="mo" id="MathJax-Span-74529" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74530" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">38</span><span class="mo" id="MathJax-Span-74531" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74532" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">36</span><span class="mo" id="MathJax-Span-74533" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74534" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">31</span><span class="mo" id="MathJax-Span-74535" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74536" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">39</span><span class="mo" id="MathJax-Span-74537" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74538" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">32</span><span class="mo" id="MathJax-Span-74539" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74540" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">38</span><span class="mo" id="MathJax-Span-74541" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74542" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">37</span><span class="mo" id="MathJax-Span-74543" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74544" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">34</span><span class="mo" id="MathJax-Span-74545" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74546" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">29</span><span class="mo" id="MathJax-Span-74547" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74548" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">34</span><span class="mo" id="MathJax-Span-74549" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74550" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">38</span><span class="mo" id="MathJax-Span-74551" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74552" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">32</span><span class="mo" id="MathJax-Span-74553" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74554" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">35</span><span class="mo" id="MathJax-Span-74555" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74556" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">36</span><span class="mo" id="MathJax-Span-74557" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74558" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">33</span><span class="mo" id="MathJax-Span-74559" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74560" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">29</span><span class="mo" id="MathJax-Span-74561" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74562" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">32</span><span class="mo" id="MathJax-Span-74563" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74564" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">35</span><span class="mo" id="MathJax-Span-74565" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74566" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">36</span><span class="mo" id="MathJax-Span-74567" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74568" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">37</span><span class="mo" id="MathJax-Span-74569" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74570" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">39</span><span class="mo" id="MathJax-Span-74571" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74572" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">38</span><span class="mo" id="MathJax-Span-74573" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74574" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">40</span><span class="mo" id="MathJax-Span-74575" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74576" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">38</span><span class="mo" id="MathJax-Span-74577" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74578" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">37</span><span class="mo" id="MathJax-Span-74579" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74580" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">39</span><span class="mo" id="MathJax-Span-74581" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74582" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">28</span><span class="mo" id="MathJax-Span-74583" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74584" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">34</span><span class="mo" id="MathJax-Span-74585" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74586" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">33</span><span class="mo" id="MathJax-Span-74587" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74588" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">40</span><span class="mo" id="MathJax-Span-74589" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74590" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">36</span><span class="mo" id="MathJax-Span-74591" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-74592" style="font-family: STIXGeneral-Regular; padding-left: 0.206em;">36</span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.128em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>29</mn><mo>,</mo><mn>39</mn><mo>,</mo><mn>35</mn><mo>,</mo><mn>33</mn><mo>,</mo><mn>39</mn><mo>,</mo><mn>28</mn><mo>,</mo><mn>33</mn><mo>,</mo><mn>35</mn><mo>,</mo><mn>31</mn><mo>,</mo><mn>31</mn><mo>,</mo><mn>37</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>38</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>31</mn><mo>,</mo><mn>39</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>38</mn><mo>,</mo><mn>37</mn><mo>,</mo><mn>34</mn><mo>,</mo><mn>29</mn><mo>,</mo><mn>34</mn><mo>,</mo><mn>38</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>35</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>33</mn><mo>,</mo><mn>29</mn><mo>,</mo><mn>32</mn><mo>,</mo><mn>35</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>37</mn><mo>,</mo><mn>39</mn><mo>,</mo><mn>38</mn><mo>,</mo><mn>40</mn><mo>,</mo><mn>38</mn><mo>,</mo><mn>37</mn><mo>,</mo><mn>39</mn><mo>,</mo><mn>28</mn><mo>,</mo><mn>34</mn><mo>,</mo><mn>33</mn><mo>,</mo><mn>40</mn><mo>,</mo><mn>36</mn><mo>,</mo><mn>36</mn></math></span></span><script type="math/tex" id="MathJax-Element-4419">29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36</script></p>
+
+<blockquote>
+  <p>问：画频率分布图时，以2为组距效果好还是以5为组距效果好。</p>
+</blockquote>
+
+<p>恩，做了下计算:</p>
+
+<ul>
+<li>"最大值为: 40 最小值为: 28 样本量为: 44"</li>
+<li>"均值的置信区间为 ( 33.76 , 35.84 )"</li>
+<li>"按照方差的1/4作为组距时，组数为: 14 此时组距为: 0.86"</li>
+<li>"按照方差的1/3作为组距时，组数为: 11 此时组距为: 1.14"</li>
+<li>"按照理论b/a计算时，组数为: 6 此时组距为: 2.08"</li>
+</ul>
+
+<p><code>ps：不用心算的感觉真是太好了(U •́ .̫ •̀ U)</code></p>
+
+<p>所以，把2作为组距的处理更接近理论值，此时组数为6，符合常识（当然嘞~因为常识就是从理论推导出来的）</p>
+
+<p>在组距为2的情况下，频数图是这样的，效果不错</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/005BXWnJgw1f3mjxy85nxj311c0qowfj.jpg" alt="组距为2" title=""></p>
+
+<p>在组距为5的情况下，频数图是这样的,效果不太好</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/005BXWnJgw1f3mjyn6tzgj311c0qoq3r.jpg" alt="组距为5" title=""></p>
+
+<p><code>ps:为什么这两张图这么难看呢，因为岛主夫人在周六的清晨肚子有点饿，想赶紧弄然去吃饭</code></p>
+
+<h2 id="r">代码如下，用R编译</h2>
+
+<pre><code class="{">x &lt;- c(29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36)
+max &lt;- max(x)
+min &lt;- min(x)
+n &lt;- length(x)
+print(paste('最大值为:', max, '最小值为:', min, '样本量为:', n))
+
+mean1 &lt;- round(t.test(x)$conf.int[[1]],2)
+mean2 &lt;- round(t.test(x)$conf.int[[2]],2)
+print(paste('均值的置信区间为','(',mean1,',',mean2,')'))
+
+a &lt;- round(mean2-mean1,2)
+b &lt;- max(x)-min(x)
+sd_4 &lt;- round(sd(x)/4,2)
+sd_3 &lt;- round(sd(x)/3,2)
+#按照标准差计算
+group_num_sd_4 &lt;- ceiling(b/sd_4)
+group_num_sd_3 &lt;- ceiling(b/sd_3)
+#按照理论值计算
+group_num_interval &lt;- ceiling(b/a)
+
+print (paste('按照标准差的1/4作为组距时，组数为:', group_num_sd_4, '此时组距为:', sd_4))
+print (paste('按照标准差的1/3作为组距时，组数为:', group_num_sd_3, '此时组距为:', sd_3))
+print (paste('按照理论b/a计算时，组数为:', group_num_interval, '此时组距为:', a))
+
+#在组距为2的情况下，频数图是这样的，效果不错
+
+breaks &lt;- seq (min(x),max(x),by=2)
+hist(x, breaks=breaks)
+
+#在组距为5的情况下，频数图是这样的,效果不太好
+
+breaks &lt;- c(seq (min(x),max(x),by=5),43)
+hist(x, breaks=breaks)
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "stat.QA.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
