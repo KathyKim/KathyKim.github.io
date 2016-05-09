@@ -35,7 +35,8 @@ So happy U are not a MIRROR！
 ##Outline
 - 5月6日   
 Python基本语法 list tuple set dit function等 大概看了3h
-- 5月7日
+- 5月8日 Slice Iteration List Comprehensions Generator Ierator
+- 5月9日 函数 必选参数、默认参数、可变参数、关键字参数和命名关键字参数
 
 
 ##Details
@@ -97,6 +98,76 @@ s = d.get('%s' % input('姓名: '), '学生不存在')
 - 可以在终端中写个.py的文件，然后在python3的环境下从这个file中抽出函数，然后直接用：）**恩，这个地方把from写成了form，估计掉了几根头发吧**
 - Python中函数的返回值是一个tuple，多个变量可以同时接收一个tuple，按位置赋给对应的值。
 
+###5月8日
+
+关于条件循环
+
+`for x in ...`循环就是把每个元素带入变量`x`，然后执行缩进块的语句。
+
+`while`循环是指只要条件满足就不断循环
+
+**Slice**
+取list或tuple或字符串的部分元素时，用循环虽然不是最笨但也很繁琐，所以*Slice*就出现了
+- 正数的第一个索引是0（前11-20 ）
+- 倒数的第一个索引是-1(最后10个)
+- 前10个数，间隔取（每隔两个数取一个）
+
+**Iteration**
+- Python高级之处（`in`）e.g. dict上的迭代
+- 判断对象可迭代
+- 生成下标循环，索引元素对
+
+**List Comprehensions**
+- 生成具有函数基因的列表`[x * x for x in range(1,11) if x % 2 == 0]`
+- 两个循环的全排列
+- 一个循环可以使用多个变量
+
+**Generator**
+如果已经知道了一个非常大的列表暗藏的规律，就不必创建完整的列表浪费存储空间而是可以一边循环一边生成。
+- Generator和函数在执行和返回时的区别：
+	- 函数：顺序执行&`return`返回|最后一行返回
+	- generator：`next()`执行，`yield`返回，再回到上次`yeild`处
+- Generator一般用for来输出结果
+- 用`for`循环时，通过捕捉`StopIeteration`来获得返回值
+- e.g. Fibonacci
+
+**Ieterator**
+	- 被用于`for`循环
+	- 被`next()`调用
+	- `Iterable`->`Iterator`: `for`循环的本质可以看做调用`next()`
+
+以上 5月8日
+
+----
+
+
+###5月9日 函数式编程
+
+**默认参数**
+> 为什么要设计str、None这样的不变对象呢？
+
+因为不变对象一旦创建，对象内部的数据就不能修改，这样就减少了由于修改数据导致的错误。此外，由于对象不变，多任务环境下同时读取对象不需要加锁，同时读一点问题都没有。
+
+**可变参数（参数的数量可以改变）**
+- 定义可变参数和定义list或tuple型的参数之间的区别
+- 把list元素和tuple元素变成可变参数传入函数中，因为函数调用时设计可变参数（list元素中的某个值代表的是一个可变参数的值）
+
+**关键字参数（用作扩展函数，e.g. 除姓名和年龄必填其余都是可选）**
+> 可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict。 by 廖学峰（ps：总结得真好：）
+
+- **命名关键字参数** 分隔符的要与不要
+`def person(name, age, *, city='Beijing', job):`
+
+> 在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，这5种参数都可以组合使用。
+
+>但是请注意，参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+`def f1(a, b, c=0, *args, **kw):`
+`def f2(a, b, c=0, *, d, **kw):`
+`f1(*args, **kw)`与`f2(*args, **kw)`都是可以的--（竟然有个**通用的**函数调用模式）
+
+以上 5月9日
+
+----
 
 
 
@@ -119,7 +190,8 @@ So happy U are not a MIRROR！</p>
 <ul>
 <li>5月6日 <br>
 Python基本语法 list tuple set dit function等 大概看了3h</li>
-<li>5月7日</li>
+<li>5月8日 Slice Iteration List Comprehensions Generator Ierator</li>
+<li>5月9日 函数 必选参数、默认参数、可变参数、关键字参数和命名关键字参数</li>
 </ul>
 
 <h2 id="details">Details</h2>
@@ -186,6 +258,86 @@ s = d.get('%s' % input('姓名: '), '学生不存在')
 <li>可以在终端中写个.py的文件，然后在python3的环境下从这个file中抽出函数，然后直接用：）<strong>恩，这个地方把from写成了form，估计掉了几根头发吧</strong></li>
 <li>Python中函数的返回值是一个tuple，多个变量可以同时接收一个tuple，按位置赋给对应的值。</li>
 </ul>
+
+<h3 id="58">5月8日</h3>
+
+<p>关于条件循环</p>
+
+<p><code>for x in ...</code>循环就是把每个元素带入变量<code>x</code>，然后执行缩进块的语句。</p>
+
+<p><code>while</code>循环是指只要条件满足就不断循环</p>
+
+<p><strong>Slice</strong>
+取list或tuple或字符串的部分元素时，用循环虽然不是最笨但也很繁琐，所以<em>Slice</em>就出现了
+- 正数的第一个索引是0（前11-20 ）
+- 倒数的第一个索引是-1(最后10个)
+- 前10个数，间隔取（每隔两个数取一个）</p>
+
+<p><strong>Iteration</strong>
+- Python高级之处（<code>in</code>）e.g. dict上的迭代
+- 判断对象可迭代
+- 生成下标循环，索引元素对</p>
+
+<p><strong>List Comprehensions</strong>
+- 生成具有函数基因的列表<code>[x * x for x in range(1,11) if x % 2 == 0]</code>
+- 两个循环的全排列
+- 一个循环可以使用多个变量</p>
+
+<p><strong>Generator</strong>
+如果已经知道了一个非常大的列表暗藏的规律，就不必创建完整的列表浪费存储空间而是可以一边循环一边生成。
+- Generator和函数在执行和返回时的区别：
+    - 函数：顺序执行&amp;<code>return</code>返回|最后一行返回
+    - generator：<code>next()</code>执行，<code>yield</code>返回，再回到上次<code>yeild</code>处
+- Generator一般用for来输出结果
+- 用<code>for</code>循环时，通过捕捉<code>StopIeteration</code>来获得返回值
+- e.g. Fibonacci</p>
+
+<p><strong>Ieterator</strong>
+    - 被用于<code>for</code>循环
+    - 被<code>next()</code>调用
+    - <code>Iterable</code>-&gt;<code>Iterator</code>: <code>for</code>循环的本质可以看做调用<code>next()</code></p>
+
+<p>以上 5月8日</p>
+
+<hr>
+
+<h3 id="59">5月9日 函数式编程</h3>
+
+<p><strong>默认参数</strong></p>
+
+<blockquote>
+  <p>为什么要设计str、None这样的不变对象呢？</p>
+</blockquote>
+
+<p>因为不变对象一旦创建，对象内部的数据就不能修改，这样就减少了由于修改数据导致的错误。此外，由于对象不变，多任务环境下同时读取对象不需要加锁，同时读一点问题都没有。</p>
+
+<p><strong>可变参数（参数的数量可以改变）</strong>
+- 定义可变参数和定义list或tuple型的参数之间的区别
+- 把list元素和tuple元素变成可变参数传入函数中，因为函数调用时设计可变参数（list元素中的某个值代表的是一个可变参数的值）</p>
+
+<p><strong>关键字参数（用作扩展函数，e.g. 除姓名和年龄必填其余都是可选）</strong></p>
+
+<blockquote>
+  <p>可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict。 by 廖学峰（ps：总结得真好：）</p>
+</blockquote>
+
+<ul>
+<li><strong>命名关键字参数</strong> 分隔符的要与不要
+<code>def person(name, age, *, city='Beijing', job):</code></li>
+</ul>
+
+<blockquote>
+  <p>在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，这5种参数都可以组合使用。</p>
+  
+  <p>但是请注意，参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+  <code>def f1(a, b, c=0, *args, **kw):</code>
+  <code>def f2(a, b, c=0, *, d, **kw):</code>
+  <code>f1(*args, **kw)</code>与<code>f2(*args, **kw)</code>都是可以的--（竟然有个<strong>通用的</strong>函数调用模式）</p>
+</blockquote>
+
+<p>以上 5月9日</p>
+
+<hr>
 <!-- content end -->
 </div>
 <br>
