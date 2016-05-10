@@ -1,1 +1,42 @@
-{"name":"KathyKim","number_of_posts_per_page":7,"disqus_shortname":"","posts":[{"title":"回答各种统计小问题","date":"2016-05-07","tags":"问答 统计","path":"stat.QA.html","num":0,"type":"post","active":false},{"title":"蹒跚学Python","date":"2016-05-06","tags":"python","path":"pathpython.html","num":1,"type":"post","active":false},{"title":"岛主夫人的博客开张了","date":"2016-05-05","tags":"lovers","path":"aboutme.html"}],"pages":[]}
+{
+  "name": "KathyKim",
+  "number_of_posts_per_page":7,
+  "disqus_shortname":"Kathy",
+  "posts":[
+          {
+          "title":"回答各种统计小问题",
+          "date":"2016-05-07",
+          "tags":"Q&A Stat",
+          "path":"stat.QA.html",
+          "num":0,
+          "type":"post",
+          "active":false
+            
+          },
+          {
+            "title":"蹒跚学Python",
+            "date":"2016-05-06",
+            "tags":"python",
+            "path":"pathpython.html",
+            "num":1,
+            "type":"post",
+            "active":false
+            
+          },
+          {
+            "title":"岛主夫人的博客开张了",
+            "date":"2016-05-05",
+            "tags":"lovers",
+            "path":"aboutme.html"
+            
+          }
+          ],
+ "pages":[
+         {
+         "title": "about",
+         "path": "/",
+         "date": "2013-07-01",
+         "tags": ""
+         }
+         ]
+}
