@@ -30,13 +30,14 @@
 
 中文版为[《数据科学实战》](https://book.douban.com/subject/26320485/)
 
-##简介：
+##1.简介：
 - **官方**
 > How can you learn this wide-ranging, interdisciplinary field? With this book, you’ll get material from Columbia University’s "Introduction to Data Science" class in an easy-to-follow format. 
 
 > Each chapter-long lecture features a guest data scientist from a prominent company such as Google, Microsoft, or eBay teaching new algorithms, methods, or models by sharing case studies and actual code they use. You’ll learn what’s involved in the lives of data scientists and be able to use the techniques they present.
 
 - **岛主夫人随便说两句**
+
 这本书是哥大所开课程**"Introduction to Data Science"**的讲义集，虽然哥大统计专业的中国人多到能让老美觉得他在中国留学，而且老美不怎么认可这个专业的学生，但是他们大都是回国干一番事业的所以也没有关系。
 
 最重要的是，一分学费一分货呀，例如这门课所请的嘉宾很厉害。
@@ -45,9 +46,8 @@
 
 
 ----
-乱弹结束，以下是正文
 
-##**最深刻的几点洞见**
+##**2.深刻的几点洞见**
 
 - Where and what domain data science happens in is not the issue— rather, defining it as a “problem space” with a corresponding “solution space” in algorithms and code and data is the key.( 关键是通过算法和代码定义一个从「问题空间」到「解法空间」的映射，而数据，则是「key」）
 
@@ -55,11 +55,18 @@
 
 - No data scientists need ever confuse the possibility of using a technology with the necessity of using it. In the sparse space of the infinite things one might do with data , only a few dense(and interesting) ethical pockets deserve out energy. ——by Matthew Jones （要克服自己的虚荣心呢，千万千万不要将使用一项『高贵』技术的「可能性」与「必要性」混为一谈）
 
-#**冒着拿零分的风险回答下书中的问题**
+##**3.见到好问题就答一下**
 
-#**干货列表**
+冒着拿零分的风险回答下书中的问题
+
+##**4.干货列表**
 
 ----
+
+ps：
+
+- 感谢岛主常来光顾
+- 感谢岛主经常提点夫人
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -68,7 +75,7 @@
 
 <p>中文版为<a href="https://book.douban.com/subject/26320485/">《数据科学实战》</a></p>
 
-<h2 id="">简介：</h2>
+<h2 id="1">1.简介：</h2>
 
 <ul>
 <li><strong>官方</strong>
@@ -81,9 +88,10 @@
 
 
 <ul>
-<li><strong>岛主夫人随便说两句</strong>
-这本书是哥大所开课程<strong>"Introduction to Data Science"</strong>的讲义集，虽然哥大统计专业的中国人多到能让老美觉得他在中国留学，而且老美不怎么认可这个专业的学生，但是他们大都是回国干一番事业的所以也没有关系。</li>
+<li><strong>岛主夫人随便说两句</strong></li>
 </ul>
+
+<p>这本书是哥大所开课程<strong>"Introduction to Data Science"</strong>的讲义集，虽然哥大统计专业的中国人多到能让老美觉得他在中国留学，而且老美不怎么认可这个专业的学生，但是他们大都是回国干一番事业的所以也没有关系。</p>
 
 <p>最重要的是，一分学费一分货呀，例如这门课所请的嘉宾很厉害。</p>
 
@@ -91,9 +99,7 @@
 
 <hr>
 
-<p>乱弹结束，以下是正文</p>
-
-<h2 id=""><strong>最深刻的几点洞见</strong></h2>
+<h2 id="2"><strong>2.深刻的几点洞见</strong></h2>
 
 <ul>
 <li><p>Where and what domain data science happens in is not the issue— rather, defining it as a “problem space” with a corresponding “solution space” in algorithms and code and data is the key.( 关键是通过算法和代码定义一个从「问题空间」到「解法空间」的映射，而数据，则是「key」）</p></li>
@@ -101,11 +107,20 @@
 <li><p>No data scientists need ever confuse the possibility of using a technology with the necessity of using it. In the sparse space of the infinite things one might do with data , only a few dense(and interesting) ethical pockets deserve out energy. ——by Matthew Jones （要克服自己的虚荣心呢，千万千万不要将使用一项『高贵』技术的「可能性」与「必要性」混为一谈）</p></li>
 </ul>
 
-<h1 id=""><strong>冒着拿零分的风险回答下书中的问题</strong></h1>
+<h2 id="3"><strong>3.见到好问题就答一下</strong></h2>
 
-<h1 id=""><strong>干货列表</strong></h1>
+<p>冒着拿零分的风险回答下书中的问题</p>
+
+<h2 id="4"><strong>4.干货列表</strong></h2>
 
 <hr>
+
+<p>ps：</p>
+
+<ul>
+<li>感谢岛主常来光顾</li>
+<li>感谢岛主经常提点夫人</li>
+</ul>
 <!-- content end -->
 </div>
 <br>
