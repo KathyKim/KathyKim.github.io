@@ -139,7 +139,7 @@ hist(x, breaks=breaks)
 <p>理论上有这么一套体系，估计很多书上给出的建议组数的大小都是根据这套理论推导出来的。</p>
 
 <ul>
-<li>组距a：为了保证频数分布表有一个凸起，这里有个理论支持，就是统计中，如果要估计总体均值，计算出样本均值<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-283-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mover&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x005E;&lt;/mo&gt;&lt;/mover&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-5293" role="math" style="width: 0.663em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.511em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.324em, 1000.511em, 2.34em, -999.947em); top: -2.132em; left: 0.003em;"><span class="mrow" id="MathJax-Span-5294"><span class="texatom" id="MathJax-Span-5295"><span class="mrow" id="MathJax-Span-5296"><span class="munderover" id="MathJax-Span-5297"><span style="display: inline-block; position: relative; width: 0.46em; height: 0px;"><span style="position: absolute; clip: rect(3.407em, 1000.46em, 4.169em, -999.947em); top: -3.961em; left: 0.003em;"><span class="mi" id="MathJax-Span-5298" style="font-family: STIXGeneral-Italic;">x<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -4.012em; left: 0.104em;"><span style="height: 0.003em; vertical-align: 0.003em; width: 0.409em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-5299" style="font-family: STIXGeneral-Regular;">̂&nbsp;<span style="height: 0.003em; vertical-align: 0.003em; margin-left: -0.607em;"></span></span><span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.188em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: 0.003em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.066em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mover><mi>x</mi><mo stretchy="false">^</mo></mover></mrow></math></span></span><script type="math/tex" id="MathJax-Element-283">\hat{x}</script>后，以它为中心确定一个95%置信区间，可以得到总体均值有95%的概率落在这个区间中。通常把这个置信区间的宽度当做组距。</li>
+<li>组距a：为了保证频数分布表有一个凸起，这里有个理论支持，就是统计中，如果要估计总体均值，计算出样本均值$\hat{x}$后，以它为中心确定一个95%置信区间，可以得到总体均值有95%的概率落在这个区间中。通常把这个置信区间的宽度当做组距。</li>
 <li>样本可能取到的区间长度b（超过这个区间的值被取到的可能性很小，所以就不讨论），这个也是从特定统计量置信区间的角度去考虑的，类似上面那个思路。但是一般用(max-min)也就够了</li>
 <li>根据b/a的值便可以得到组数了。</li>
 </ul>
@@ -149,8 +149,7 @@ hist(x, breaks=breaks)
 <h2 id="">模拟一下</h2>
 
 <p>关于被咨询那个习题。给出的数据集是：
-29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36</p>
-
+$29,39,35,33,39,28,33,35,31,31,37,32,38,36,31,39,32,38,37,34,29,34,38,32,35,36,33,29,32,35,36,37,39,38,40,38,37,39,28,34,33,40,36,36$</p>
 <blockquote>
   <p>问：画频率分布图时，以2为组距效果好还是以5为组距效果好。</p>
 </blockquote>
