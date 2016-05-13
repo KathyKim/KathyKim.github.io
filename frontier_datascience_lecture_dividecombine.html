@@ -1,0 +1,364 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+不想结束和岛主的聊天，然后问了个傻问题「博客里能不能写下听讲座的感想？」岛主说「当然可以啦~」
+
+然后我就开始敲字，因为是第一篇，虽然心存敬畏有些忐忑但是也因为是「第一篇」，所以能找到能多理由安慰自己「你还有很大的进步空间...」
+
+<center>
+那就写吧
+
+((☛(◜◔。◔◝)☚))
+
+</center>
+
+btw, 希望岛主能够在承诺分给我的岛屿面积不止10%的情况下再去考虑写财产分配的事，哈哈~您不觉得10%太少了嘛？
+
+ps：我每次干正事前扯这么多有的没的真是太没效率了(U •́ .̫ •̀ U)
+
+
+<center>**以下是正事开始的分割线**</center>
+# Introduction
+这两天院里有十几场讲座，恩，这是我听的第一场，看到白发苍苍的林正炎教授坐在第一排时，有些触动「老教授研究了一辈子底层的概率极限理论，成就斐然，晚年竟然还愿意参与到新兴领域中重新享受学生的感觉。」
+
+林师宗在讲座的最后说了一句「你这个方向很好啊，思路也很好，我们统计的确应该帮助那些『广为使用的大数据处理方法』打打理论基础了。」
+
+这个广为使用的大数据处理方法就是Divide-Combine.
+
+> 让岛主夫人发挥她聪明的小脑袋为你举个简单的例子：
+
+不靠谱的男生追求女生时只想感动自己，于是选择「折10000只千纸鹤去表白」的方式。找了10个平常相处「很好」的女同学拜托她们每人折1000只，这个时候任务就被Divide成10份了，最后那个男生把折好的10份1000只Combine起来送给想追求的那个女生。
+
+ 对于计算机思维的小伙伴而言，这件事就这么了了，反正已经得到了所需要的结果「10,000只千纸鹤」。但是统计学家捋了捋白胡子，他想知道「男生自己折10,000只千纸鹤去表白」与「男生利用通过Divide-Combine的手段得到10,000只千纸鹤去表白」，会影响女生最后决定嘛？
+
+忽略这个例子的局限性，其实想关注的问题是——利用Full Data一次性得到的结论和利用Divide-Combine手段得到结论的「一样」嘛？
+
+**在非常简单的问题上**，肯定是一样的，例如求和，1000个数字，分成10组，每组求和得到$$\sum_{1}, \dot, sum_{10}$$再求$$\sum_{i=1}^{10}s_{i}$$肯定和$$\sum_{i=1}^{100}j$$一致
+
+**在更为复杂的问题上**，这个问题很难回答：
+
+- 复杂到什么程度？非线性太不容易分析&解释，那就先考虑最简单的广义线性模型中的回归分析问题。例如：把全部的数据分成k个数据集分别进行建模最后把模型整合得到一个预测模型A，与一次性利用全部的数据进行建模得到预测模型B。
+- 然后要定义的是「一样的标准是什么」，姑且把它放在统计学的框架中去讨论，从几个统计指标入手。
+- 定义了标准后，可以思考二者得出的结果：
+    - A与B在实际预测中的表现是否一致？
+    - 到底A好还是B好『并不是说A一定好，因为计算机暂时无法做到无限可能，所以在数据量很大的情况下处理Full Data的效果会让人很无语』
+    - 在什么前提下，其差异是可接受的？
+    - 在什么条件下，其差异可以趋于0？
+
+总结下上面说了什么：
+
+1. 用一个不太靠谱的例子解释了一下Divide-Combine思想
+2. 将其从机械的应用引申到更细致的思考中——真的可以这么做吗？
+
+---
+接下来讲点理论层面的
+
+ps：由于还没收到讲座幻灯片，有很多推导的细节还需要确认，这个主题很新也无法查阅参考文献，先粗略地写下
+
+###**讲座的主题**
+**Method of divide-and-combine in regularized generalized linear models for Big Data**——广义线性模型在处理大数据方面上的应用。
+
+计算机中被广泛应用的Divide-Combine的方法在统计框架下的表现如何。从统计角度如何考虑大数据？特别是在回归分析领域，可以从理论上对其进行支持嘛？
+
+Peter Song教授的一个博士生提出了一个新的方法，MODAC，Method of Divide and Combine（唉，统计学就是因为不会起名字而输在起跑线上）。这个方法获得理论上的支持——Large-Sample Properties 在分割总和后，其结果对Statistical Inference没有影响。即，计算机提出的思想，用统计的知识去证明其在inference上是可达到的。
+
+
+###**背景1：The Data Mining Pipeline**
+- 20 Years Ago
+- Now: 大的cluster 云端、多线程读取。
+- 所以现在统计的发展也要随着数据结构的变化而变化——数据的清理-整合-建模-机器学习-结果解释。
+
+###**背景2：Big Data Challenge**
+- The data size is extraordinarily large
+- Lack of general and scalable big data programming model and parallel processing frameword
+- One main idea of great popularity is to divide and combine
+
+###**背景3：Divide and Combine**
+- distributed storage
+- centralized storage with random partition
+- GLM regression analysis
+
+###**背景4：Meta-analysis**
+- Meta-analysis has been used to combine results「这是统计学领域与Divide-Combine相类似的思想，说来话很长而且还蛮有戏剧性的，等下次吧。」
+- 在2004-2015年，共有55000篇与Meta-analysis 有关的文章被发表
+
+###**方法：MODAC，Method of Divide and Combine**
+
+###**困境：**
+1. 在$n=10,000, p=300, s_{0}=10$的情况下
+meta在处理logistic 部分出了问题，非常非常大的$St. err. of A_{0}$
+
+2. 分成K组，$V_{k}$是极大似然估计的方差矩阵-->Fisher信息矩阵，在求逆的过程中结果非常不稳定。
+
+3. Regularization
+- Chen and Xie
+- 模型在运用中产生了高Bias, 丧失了Inference的能力
+
+###**解决方法：**
+1. 在做Lasso的问题时，结果是bias estimators，所以接下来要做一些bias-correction。解决的方法是通过一个扰动项的逆来得到正态分布的结果
+
+2. 在解决遇到多重线性相关导致结果很不稳定时，解决的方法是引入岭回归的思想。
+
+###**修正后的结果（理论上）：**
+- 相合性
+- 渐近正态性
+- **分开得到的结果和全部一起处理得到的结果是一致的**
+
+###**修正后的结果（Simulation）：**
+$n=10,000, K=20,  n_{k}=500, p=300, s_{0}=10$
+- R包glmet中的lasso在处理Poisson时的效率太差
+- Computing Time并不随数据量数据集的级数增长而有很大的变化，即scalable
+- MSE Ratio
+- Coverage Probability 置信区间是95% 
+
+###**引申思考：**
+- coverage probability
+- 我们所提出的方法真对的饿是n > p的情况，但是对于p > n 的数据，未知的比已知的多，如何去做推算呢？「这个时候Peter Song教授说了一句『在哲学上是不可能的』，让我很惊叹」目前的方法都是，一个一个去做呢，会出什么样的问题呢
+- 2015, Zheng D On Random Effect Meta Analysis
+- 进一步，除了linear regression外，classification可以吗？
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>不想结束和岛主的聊天，然后问了个傻问题「博客里能不能写下听讲座的感想？」岛主说「当然可以啦~」</p>
+
+<p>然后我就开始敲字，因为是第一篇，虽然心存敬畏有些忐忑但是也因为是「第一篇」，所以能找到能多理由安慰自己「你还有很大的进步空间...」</p>
+
+<p></p><center>
+那就写吧<p></p>
+
+<p>((☛(◜◔。◔◝)☚))</p>
+
+<p></p></center><p></p>
+
+<p>btw, 希望岛主能够在承诺分给我的岛屿面积不止10%的情况下再去考虑写财产分配的事，哈哈~您不觉得10%太少了嘛？</p>
+
+<p>ps：我每次干正事前扯这么多有的没的真是太没效率了(U •́ .̫ •̀ U)</p>
+
+<p></p><center><strong>以下是正事开始的分割线</strong></center><p></p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>这两天院里有十几场讲座，恩，这是我听的第一场，看到白发苍苍的林正炎教授坐在第一排时，有些触动「老教授研究了一辈子底层的概率极限理论，成就斐然，晚年竟然还愿意参与到新兴领域中重新享受学生的感觉。」</p>
+
+<p>林师宗在讲座的最后说了一句「你这个方向很好啊，思路也很好，我们统计的确应该帮助那些『广为使用的大数据处理方法』打打理论基础了。」</p>
+
+<p>这个广为使用的大数据处理方法就是Divide-Combine.</p>
+
+<blockquote>
+  <p>让岛主夫人发挥她聪明的小脑袋为你举个简单的例子：</p>
+</blockquote>
+
+<p>不靠谱的男生追求女生时只想感动自己，于是选择「折10000只千纸鹤去表白」的方式。找了10个平常相处「很好」的女同学拜托她们每人折1000只，这个时候任务就被Divide成10份了，最后那个男生把折好的10份1000只Combine起来送给想追求的那个女生。</p>
+
+<p>对于计算机思维的小伙伴而言，这件事就这么了了，反正已经得到了所需要的结果「10,000只千纸鹤」。但是统计学家捋了捋白胡子，他想知道「男生自己折10,000只千纸鹤去表白」与「男生利用通过Divide-Combine的手段得到10,000只千纸鹤去表白」，会影响女生最后决定嘛？</p>
+
+<p>忽略这个例子的局限性，其实想关注的问题是——利用Full Data一次性得到的结论和利用Divide-Combine手段得到结论的「一样」嘛？</p>
+
+<p><strong>在非常简单的问题上</strong>，肯定是一样的，例如求和，1000个数字，分成10组，每组求和得到$$\sum<em>{1}, \dot, sum</em>{10}<span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-25206-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x518D;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x6C42;&lt;/mo&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-527536" role="math" style="width: 2.035em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.629em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.374em, 1001.629em, 2.696em, -999.947em); top: -2.284em; left: 0.003em;"><span class="mrow" id="MathJax-Span-527537"><span class="texatom" id="MathJax-Span-527538"><span class="mrow" id="MathJax-Span-527539"><span class="mo" id="MathJax-Span-527540"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">再</span></span></span></span><span class="texatom" id="MathJax-Span-527541"><span class="mrow" id="MathJax-Span-527542"><span class="mo" id="MathJax-Span-527543"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">求</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.34em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow class="MJX-TeXAtom-ORD"><mo>再</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>求</mo></mrow></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-25206">再求</script>\sum<em>{i=1}^{10}s</em>{i}<span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_Display" style="text-align: center;"><span class="MathJax" id="MathJax-Element-25207-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x80AF;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5B9A;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x548C;&lt;/mo&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-527544" role="math" style="width: 3.001em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.442em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.374em, 1002.442em, 2.696em, -999.947em); top: -2.284em; left: 0.003em;"><span class="mrow" id="MathJax-Span-527545"><span class="texatom" id="MathJax-Span-527546"><span class="mrow" id="MathJax-Span-527547"><span class="mo" id="MathJax-Span-527548"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">肯</span></span></span></span><span class="texatom" id="MathJax-Span-527549"><span class="mrow" id="MathJax-Span-527550"><span class="mo" id="MathJax-Span-527551"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">定</span></span></span></span><span class="texatom" id="MathJax-Span-527552"><span class="mrow" id="MathJax-Span-527553"><span class="mo" id="MathJax-Span-527554"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">和</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.34em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML MJX_Assistive_MathML_Block" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow class="MJX-TeXAtom-ORD"><mo>肯</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>定</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>和</mo></mrow></math></span></span></div><script type="math/tex; mode=display" id="MathJax-Element-25207">肯定和</script>\sum_{i=1}^{100}j$$一致</p>
+
+<p><strong>在更为复杂的问题上</strong>，这个问题很难回答：</p>
+
+<ul>
+<li>复杂到什么程度？非线性太不容易分析&amp;解释，那就先考虑最简单的广义线性模型中的回归分析问题。例如：把全部的数据分成k个数据集分别进行建模最后把模型整合得到一个预测模型A，与一次性利用全部的数据进行建模得到预测模型B。</li>
+<li>然后要定义的是「一样的标准是什么」，姑且把它放在统计学的框架中去讨论，从几个统计指标入手。</li>
+<li>定义了标准后，可以思考二者得出的结果：
+<ul><li>A与B在实际预测中的表现是否一致？</li>
+<li>到底A好还是B好『并不是说A一定好，因为计算机暂时无法做到无限可能，所以在数据量很大的情况下处理Full Data的效果会让人很无语』</li>
+<li>在什么前提下，其差异是可接受的？</li>
+<li>在什么条件下，其差异可以趋于0？</li></ul></li>
+</ul>
+
+<p>总结下上面说了什么：</p>
+
+<ol>
+<li>用一个不太靠谱的例子解释了一下Divide-Combine思想</li>
+<li>将其从机械的应用引申到更细致的思考中——真的可以这么做吗？</li>
+</ol>
+
+<hr>
+
+<p>接下来讲点理论层面的</p>
+
+<p>ps：由于还没收到讲座幻灯片，有很多推导的细节还需要确认，这个主题很新也无法查阅参考文献，先粗略地写下</p>
+
+<h3 id=""><strong>讲座的主题</strong></h3>
+
+<p><strong>Method of divide-and-combine in regularized generalized linear models for Big Data</strong>——广义线性模型在处理大数据方面上的应用。</p>
+
+<p>计算机中被广泛应用的Divide-Combine的方法在统计框架下的表现如何。从统计角度如何考虑大数据？特别是在回归分析领域，可以从理论上对其进行支持嘛？</p>
+
+<p>Peter Song教授的一个博士生提出了一个新的方法，MODAC，Method of Divide and Combine（唉，统计学就是因为不会起名字而输在起跑线上）。这个方法获得理论上的支持——Large-Sample Properties 在分割总和后，其结果对Statistical Inference没有影响。即，计算机提出的思想，用统计的知识去证明其在inference上是可达到的。</p>
+
+<h3 id="1thedataminingpipeline"><strong>背景1：The Data Mining Pipeline</strong></h3>
+
+<ul>
+<li>20 Years Ago</li>
+<li>Now: 大的cluster 云端、多线程读取。</li>
+<li>所以现在统计的发展也要随着数据结构的变化而变化——数据的清理-整合-建模-机器学习-结果解释。</li>
+</ul>
+
+<h3 id="2bigdatachallenge"><strong>背景2：Big Data Challenge</strong></h3>
+
+<ul>
+<li>The data size is extraordinarily large</li>
+<li>Lack of general and scalable big data programming model and parallel processing frameword</li>
+<li>One main idea of great popularity is to divide and combine</li>
+</ul>
+
+<h3 id="3divideandcombine"><strong>背景3：Divide and Combine</strong></h3>
+
+<ul>
+<li>distributed storage</li>
+<li>centralized storage with random partition</li>
+<li>GLM regression analysis</li>
+</ul>
+
+<h3 id="4metaanalysis"><strong>背景4：Meta-analysis</strong></h3>
+
+<ul>
+<li>Meta-analysis has been used to combine results「这是统计学领域与Divide-Combine相类似的思想，说来话很长而且还蛮有戏剧性的，等下次吧。」</li>
+<li>在2004-2015年，共有55000篇与Meta-analysis 有关的文章被发表</li>
+</ul>
+
+<h3 id="modacmethodofdivideandcombine"><strong>方法：MODAC，Method of Divide and Combine</strong></h3>
+
+<h3 id=""><strong>困境：</strong></h3>
+
+<ol>
+<li><p>在$n=10,000, p=300, s<em>{0}=10<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-25208-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7684;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x60C5;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x51B5;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4E0B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5728;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5904;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7406;&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x90E8;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5206;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x51FA;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4E86;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x95EE;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x9898;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#xFF0C;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x975E;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5E38;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x975E;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5E38;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5927;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7684;&lt;/mo&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-527555" role="math" style="width: 26.12em; display: inline-block;"><span style="display: inline-block; position: relative; width: 21.242em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.578em, 1021.242em, 2.899em, -999.947em); top: -2.487em; left: 0.003em;"><span class="mrow" id="MathJax-Span-527556"><span class="texatom" id="MathJax-Span-527557"><span class="mrow" id="MathJax-Span-527558"><span class="mo" id="MathJax-Span-527559"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-527560"><span class="mrow" id="MathJax-Span-527561"><span class="mo" id="MathJax-Span-527562"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">情</span></span></span></span><span class="texatom" id="MathJax-Span-527563"><span class="mrow" id="MathJax-Span-527564"><span class="mo" id="MathJax-Span-527565"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">况</span></span></span></span><span class="texatom" id="MathJax-Span-527566"><span class="mrow" id="MathJax-Span-527567"><span class="mo" id="MathJax-Span-527568"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">下</span></span></span></span><span class="mi" id="MathJax-Span-527569" style="font-family: STIXGeneral-Italic;">m</span><span class="mi" id="MathJax-Span-527570" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-527571" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-527572" style="font-family: STIXGeneral-Italic;">a</span><span class="texatom" id="MathJax-Span-527573"><span class="mrow" id="MathJax-Span-527574"><span class="mo" id="MathJax-Span-527575"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">在</span></span></span></span><span class="texatom" id="MathJax-Span-527576"><span class="mrow" id="MathJax-Span-527577"><span class="mo" id="MathJax-Span-527578"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">处</span></span></span></span><span class="texatom" id="MathJax-Span-527579"><span class="mrow" id="MathJax-Span-527580"><span class="mo" id="MathJax-Span-527581"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">理</span></span></span></span><span class="mi" id="MathJax-Span-527582" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-527583" style="font-family: STIXGeneral-Italic;">o</span><span class="mi" id="MathJax-Span-527584" style="font-family: STIXGeneral-Italic;">g</span><span class="mi" id="MathJax-Span-527585" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-527586" style="font-family: STIXGeneral-Italic;">s</span><span class="mi" id="MathJax-Span-527587" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-527588" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-527589" style="font-family: STIXGeneral-Italic;">c</span><span class="texatom" id="MathJax-Span-527590"><span class="mrow" id="MathJax-Span-527591"><span class="mo" id="MathJax-Span-527592"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">部</span></span></span></span><span class="texatom" id="MathJax-Span-527593"><span class="mrow" id="MathJax-Span-527594"><span class="mo" id="MathJax-Span-527595"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">分</span></span></span></span><span class="texatom" id="MathJax-Span-527596"><span class="mrow" id="MathJax-Span-527597"><span class="mo" id="MathJax-Span-527598"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">出</span></span></span></span><span class="texatom" id="MathJax-Span-527599"><span class="mrow" id="MathJax-Span-527600"><span class="mo" id="MathJax-Span-527601"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">了</span></span></span></span><span class="texatom" id="MathJax-Span-527602"><span class="mrow" id="MathJax-Span-527603"><span class="mo" id="MathJax-Span-527604"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">问</span></span></span></span><span class="texatom" id="MathJax-Span-527605"><span class="mrow" id="MathJax-Span-527606"><span class="mo" id="MathJax-Span-527607"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">题</span></span></span></span><span class="texatom" id="MathJax-Span-527608"><span class="mrow" id="MathJax-Span-527609"><span class="mo" id="MathJax-Span-527610"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">，</span></span></span></span><span class="texatom" id="MathJax-Span-527611"><span class="mrow" id="MathJax-Span-527612"><span class="mo" id="MathJax-Span-527613"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">非</span></span></span></span><span class="texatom" id="MathJax-Span-527614"><span class="mrow" id="MathJax-Span-527615"><span class="mo" id="MathJax-Span-527616"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">常</span></span></span></span><span class="texatom" id="MathJax-Span-527617"><span class="mrow" id="MathJax-Span-527618"><span class="mo" id="MathJax-Span-527619"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">非</span></span></span></span><span class="texatom" id="MathJax-Span-527620"><span class="mrow" id="MathJax-Span-527621"><span class="mo" id="MathJax-Span-527622"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">常</span></span></span></span><span class="texatom" id="MathJax-Span-527623"><span class="mrow" id="MathJax-Span-527624"><span class="mo" id="MathJax-Span-527625"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">大</span></span></span></span><span class="texatom" id="MathJax-Span-527626"><span class="mrow" id="MathJax-Span-527627"><span class="mo" id="MathJax-Span-527628"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">的</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>情</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>况</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>下</mo></mrow><mi>m</mi><mi>e</mi><mi>t</mi><mi>a</mi><mrow class="MJX-TeXAtom-ORD"><mo>在</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>处</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>理</mo></mrow><mi>l</mi><mi>o</mi><mi>g</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>c</mi><mrow class="MJX-TeXAtom-ORD"><mo>部</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>分</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>出</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>了</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>问</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>题</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>非</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>常</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>非</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>常</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>大</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow></math></span></span><script type="math/tex" id="MathJax-Element-25208">的情况下
+meta在处理logistic 部分出了问题，非常非常大的</script>St. err. of A</em>{0}$</p></li>
+<li><p>分成K组，<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-25209-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;/mrow&gt;&lt;/msub&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-527629" role="math" style="width: 1.324em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.07em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.374em, 1001.07em, 2.492em, -999.947em); top: -2.132em; left: 0.003em;"><span class="mrow" id="MathJax-Span-527630"><span class="msubsup" id="MathJax-Span-527631"><span style="display: inline-block; position: relative; width: 1.019em; height: 0px;"><span style="position: absolute; clip: rect(3.204em, 1000.714em, 4.169em, -999.947em); top: -3.961em; left: 0.003em;"><span class="mi" id="MathJax-Span-527632" style="font-family: STIXGeneral-Italic;">V<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.104em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -3.808em; left: 0.612em;"><span class="texatom" id="MathJax-Span-527633"><span class="mrow" id="MathJax-Span-527634"><span class="mi" id="MathJax-Span-527635" style="font-size: 70.7%; font-family: STIXGeneral-Italic;">k<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.188em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.184em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.128em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>V</mi><mrow class="MJX-TeXAtom-ORD"><mi>k</mi></mrow></msub></math></span></span><script type="math/tex" id="MathJax-Element-25209">V_{k}</script>是极大似然估计的方差矩阵--&gt;Fisher信息矩阵，在求逆的过程中结果非常不稳定。</p></li>
+<li><p>Regularization</p></li>
+<li>Chen and Xie</li>
+<li>模型在运用中产生了高Bias, 丧失了Inference的能力</li>
+</ol>
+
+<h3 id=""><strong>解决方法：</strong></h3>
+
+<ol>
+<li><p>在做Lasso的问题时，结果是bias estimators，所以接下来要做一些bias-correction。解决的方法是通过一个扰动项的逆来得到正态分布的结果</p></li>
+<li><p>在解决遇到多重线性相关导致结果很不稳定时，解决的方法是引入岭回归的思想。</p></li>
+</ol>
+
+<h3 id=""><strong>修正后的结果（理论上）：</strong></h3>
+
+<ul>
+<li>相合性</li>
+<li>渐近正态性</li>
+<li><strong>分开得到的结果和全部一起处理得到的结果是一致的</strong></li>
+</ul>
+
+<h3 id="simulation"><strong>修正后的结果（Simulation）：</strong></h3>
+
+<p>$n=10,000, K=20,  n<em>{k}=500, p=300, s</em>{0}=10$
+- R包glmet中的lasso在处理Poisson时的效率太差
+- Computing Time并不随数据量数据集的级数增长而有很大的变化，即scalable
+- MSE Ratio
+- Coverage Probability 置信区间是95% </p>
+
+<h3 id=""><strong>引申思考：</strong></h3>
+
+<ul>
+<li>coverage probability</li>
+<li>我们所提出的方法真对的饿是n &gt; p的情况，但是对于p &gt; n 的数据，未知的比已知的多，如何去做推算呢？「这个时候Peter Song教授说了一句『在哲学上是不可能的』，让我很惊叹」目前的方法都是，一个一个去做呢，会出什么样的问题呢</li>
+<li>2015, Zheng D On Random Effect Meta Analysis</li>
+<li>进一步，除了linear regression外，classification可以吗？</li>
+</ul>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "frontier_datascience_lecture_dividecombine.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
