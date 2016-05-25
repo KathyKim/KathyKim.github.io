@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+在Udacicy论坛上看到有位导师贴出了[这篇文章](http://scott.fortmann-roe.com/docs/BiasVariance.html)，希望感兴趣的同学能够翻译下。我想了下，那我就试试吧。
+
+---
+
+
+
+
+
+犹豫了下，决定在翻译前写点「导读」，网上很多写这块的，大部分作者的功底还是不够扎实，没有讲清楚，希望我写完后不会心生如下的感慨
+
+<center> 啊！我的功底在哪里？</center>
+
+<center> ⊂( ˆ - ˆ )⊃ </center>
+
+---
+ok，here we go~
+
+在大脑一片空白的情况下，我们遇到了一堆数据，不妨假设这是堆有自变量x和因变量y的数据，比如说，商品销售额是y，广告预算是x，我们要研究的是y怎样被x所影响。
+
+此时你要意识到，这些数据只是**「观测值」**，而不是**「真实值」**，ok，说得更加感性&悲观些:
+
+> 作为人类，你永远不会得到「真实值」，更别提被「苍茫现实世界」所掩盖的真实模型
+
+就好像那句**老话**说的「所有的模型都是错的，但是其中有一些**非常有用**」，姑且让我们忽略前半句话吧（眨眼~）
+
+接下来，就从「非常有用」这个主观概念入手吧。
+
+##**何谓「好的模型」**
+
+从直观感觉入手，然后慢慢将其进行抽象化。
+
+- **直观上**，好的模型通常有以下两个特点：
+1. **预测准确**（这个很直观，就不多解释啦）
+2. **可被理解**（模型中的自变量都非常重要「模型足够简洁」&自变量之间的相关性较低「模型冗余度低，更精简」&能体现自变量是如何影响因变量的「参数的意义」。但是这一点的重要性越来越低，唉，关于这个心中满是感慨，先压下）
+
+- **抽象化**，如何量化一个模型的好坏呢？
+在工程领域的小伙伴看来，好坏=预测准确与否。即，对于每一个自变量x，模型会给出一个预测值，同时我们会有一个观测值，预测值和观测值之间的距离可以被定义。如果距离够近，那就足够好。当然，怎么定义距离，又是后话了。
+
+但是，在统计专业的小伙伴看来，模型的整体表现是最重要的，例如无偏性、渐进性等统计术语喷薄而出保证这个模型是稳定的，不会被大西洋彼岸的蝴蝶的一次翅膀扇动而受海啸冲击飞灰湮灭。
+
+以上，我们都没有谈及真实模型，why？因为我们对其一无所知呀。不过，虽然真实模型无法企及，但是有所追求是好事。
+
+---
+##各种各样的模型
+###**真实模型**
+
+因为观测值是围绕着真实值随机产生的，所以二者之间的误差是irreducible error, 也就是说，即使我们知道真实模型，在预测的时候，我们得到的预测值依旧与观测值不一致（好愁人，那岛主的完美主义该怎么办呢（眨眼~）。
+
+<center>从真实模型退一步</center>
+
+###**真实模型-最优模型(回归方程)**
+两个问题：
+
+- Q：看到「最优」两字后，我知道接下来该讲讲「这个『优』背后的衡量指标是什么？」
+A：取**均方误差MSE**作为模型衡量指标后，在X=x时应该取何值会使得均方误差最小？
+可以在理论上得到证明，当模型f(x)取值为**E(Y| X=x)**时，均方误差达到最小。
+
+- Q：**E(Y| X=x)**是何方神圣呢？
+A：如下图，在x=4这一点，取在「这一点**所有观测值**（各种灰色的点）的平均数（红色的那个点）」作为「最优模型在这点的值」
+
+ok，然后又出问题，「所有观测值」听上去也很遥远呢~没错呀，我们也做不到这点。
+
+先停下来回顾下：
+
+1. 真实模型肯定搞不定
+2. 加上一个衡量标准「均方误差」
+3. 得到最优模型f(x)=E(Y| X=x)
+4. 这个最优模型还有一个美丽的名字——回归模型（向均值回归）
+5. 但是最优模型也不好搞定呢——无法弄到所有的观测值
+6. 那就试试向最优模型靠近吧——随着观测值数量的增多，这个靠近是可行的
+7. 终于可以做点什么了
+
+<center>从真实模型退两步</center>
+###**真实模型-最优模型(回归方程)-我们的模型**
+
+ok，我们再回顾下：
+
+Y：观测值
+...：真实值（完全不知道）
+f(x)：最优模型（回归方程）给出的值，最优模型使得E[(Y-f(x))^{2}]
+\hat{f}(x)：我们的模型
+
+当有了我们的模型后，此时应该衡量的就是，「观测值」与「我们的的模型给出的值」之间的差距。
+
+(\varepsilon) = y-f(x)
+
+E[(Y-\hat{f}(X))^{2} |X=x] = [f(x)-\hat{f}(x)]^{2} + Var(\varepsilon)
+
+Var(\varepsilon) is irreducible, while [f(x)-\hat{f}(x)]^{2} is reducible
+
+看得更清楚些，在特定的点 x_{0} 处，我们的观测值是 y_{0}，估计值是 \hat{f}(x_{0})
+偏差Bias(\hat{f}(x){0}) = E[\hat{f}(x){0}] - \hat{f}(x){0}
+
+---
+
+ok，接下来再贴翻译稿我觉得好多啦！
+
+---
+
+当我们讨论预测模型的时候，预测误差可以被分解成两个部分：
+- 偏差，即预测值偏离真实值的部分
+- 波动，即预测的稳定性
+
+但是对于一个模型而言，上述两部分是此消彼长的关系，所以就需要对其二者进行权衡。理解这两类误差可以帮助我们诊断模型，从而更好地避免过拟合及欠拟合。
+
+#1. Bias and Variance
+理解误差组成部分——偏差&波动，分别是如何产生的，能够帮助我们优化数据你和的过程，从而得到更加精确的模型。接下来，我们将从直观概念、几何、数学描述这三个角度定义偏差和波动。
+
+##1.1 直观上的定义
+
+- **由偏差导致的误差**：这个误差是由于
+
+
+- **由波动导致的误差**：
+
+注：未完待续
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>在Udacicy论坛上看到有位导师贴出了<a href="http://scott.fortmann-roe.com/docs/BiasVariance.html">这篇文章</a>，希望感兴趣的同学能够翻译下。我想了下，那我就试试吧。</p>
+
+<hr>
+
+<p>犹豫了下，决定在翻译前写点「导读」，网上很多写这块的，大部分作者的功底还是不够扎实，没有讲清楚，希望我写完后不会心生如下的感慨</p>
+
+<p></p><center> 啊！我的功底在哪里？</center><p></p>
+
+<p></p><center> ⊂( ˆ - ˆ )⊃ </center><p></p>
+
+<hr>
+
+<p>ok，here we go~</p>
+
+<p>在大脑一片空白的情况下，我们遇到了一堆数据，不妨假设这是堆有自变量x和因变量y的数据，比如说，商品销售额是y，广告预算是x，我们要研究的是y怎样被x所影响。</p>
+
+<p>此时你要意识到，这些数据只是<strong>「观测值」</strong>，而不是<strong>「真实值」</strong>，ok，说得更加感性&amp;悲观些:</p>
+
+<blockquote>
+  <p>作为人类，你永远不会得到「真实值」，更别提被「苍茫现实世界」所掩盖的真实模型</p>
+</blockquote>
+
+<p>就好像那句<strong>老话</strong>说的「所有的模型都是错的，但是其中有一些<strong>非常有用</strong>」，姑且让我们忽略前半句话吧（眨眼~）</p>
+
+<p>接下来，就从「非常有用」这个主观概念入手吧。</p>
+
+<h2 id=""><strong>何谓「好的模型」</strong></h2>
+
+<p>从直观感觉入手，然后慢慢将其进行抽象化。</p>
+
+<ul>
+<li><strong>直观上</strong>，好的模型通常有以下两个特点：</li>
+<li><strong>预测准确</strong>（这个很直观，就不多解释啦）</li>
+<li><p><strong>可被理解</strong>（模型中的自变量都非常重要「模型足够简洁」&amp;自变量之间的相关性较低「模型冗余度低，更精简」&amp;能体现自变量是如何影响因变量的「参数的意义」。但是这一点的重要性越来越低，唉，关于这个心中满是感慨，先压下）</p></li>
+<li><p><strong>抽象化</strong>，如何量化一个模型的好坏呢？
+在工程领域的小伙伴看来，好坏=预测准确与否。即，对于每一个自变量x，模型会给出一个预测值，同时我们会有一个观测值，预测值和观测值之间的距离可以被定义。如果距离够近，那就足够好。当然，怎么定义距离，又是后话了。</p></li>
+</ul>
+
+<p>但是，在统计专业的小伙伴看来，模型的整体表现是最重要的，例如无偏性、渐进性等统计术语喷薄而出保证这个模型是稳定的，不会被大西洋彼岸的蝴蝶的一次翅膀扇动而受海啸冲击飞灰湮灭。</p>
+
+<p>以上，我们都没有谈及真实模型，why？因为我们对其一无所知呀。不过，虽然真实模型无法企及，但是有所追求是好事。</p>
+
+<hr>
+
+<h2 id="">各种各样的模型</h2>
+
+<h3 id=""><strong>真实模型</strong></h3>
+
+<p>因为观测值是围绕着真实值随机产生的，所以二者之间的误差是irreducible error, 也就是说，即使我们知道真实模型，在预测的时候，我们得到的预测值依旧与观测值不一致（好愁人，那岛主的完美主义该怎么办呢（眨眼~）。</p>
+
+<p></p><center>从真实模型退一步</center><p></p>
+
+<h3 id=""><strong>真实模型-最优模型(回归方程)</strong></h3>
+
+<p>两个问题：</p>
+
+<ul>
+<li><p>Q：看到「最优」两字后，我知道接下来该讲讲「这个『优』背后的衡量指标是什么？」
+A：取<strong>均方误差MSE</strong>作为模型衡量指标后，在X=x时应该取何值会使得均方误差最小？
+可以在理论上得到证明，当模型f(x)取值为<strong>E(Y| X=x)</strong>时，均方误差达到最小。</p></li>
+<li><p>Q：<strong>E(Y| X=x)</strong>是何方神圣呢？
+A：如下图，在x=4这一点，取在「这一点<strong>所有观测值</strong>（各种灰色的点）的平均数（红色的那个点）」作为「最优模型在这点的值」</p></li>
+</ul>
+
+<p>ok，然后又出问题，「所有观测值」听上去也很遥远呢~没错呀，我们也做不到这点。</p>
+
+<p>先停下来回顾下：</p>
+
+<ol>
+<li>真实模型肯定搞不定</li>
+<li>加上一个衡量标准「均方误差」</li>
+<li>得到最优模型f(x)=E(Y| X=x)</li>
+<li>这个最优模型还有一个美丽的名字——回归模型（向均值回归）</li>
+<li>但是最优模型也不好搞定呢——无法弄到所有的观测值</li>
+<li>那就试试向最优模型靠近吧——随着观测值数量的增多，这个靠近是可行的</li>
+<li>终于可以做点什么了</li>
+</ol>
+
+<p></p><center>从真实模型退两步</center><p></p>
+
+<h3 id=""><strong>真实模型-最优模型(回归方程)-我们的模型</strong></h3>
+
+<p>ok，我们再回顾下：</p>
+
+<p>Y：观测值
+...：真实值（完全不知道）
+f(x)：最优模型（回归方程）给出的值，最优模型使得E[(Y-f(x))^{2}]
+\hat{f}(x)：我们的模型</p>
+
+<p>当有了我们的模型后，此时应该衡量的就是，「观测值」与「我们的的模型给出的值」之间的差距。</p>
+
+<p>(\varepsilon) = y-f(x)</p>
+
+<p>E[(Y-\hat{f}(X))^{2} |X=x] = [f(x)-\hat{f}(x)]^{2} + Var(\varepsilon)</p>
+
+<p>Var(\varepsilon) is irreducible, while [f(x)-\hat{f}(x)]^{2} is reducible</p>
+
+<p>看得更清楚些，在特定的点 x<em>{0} 处，我们的观测值是 y</em>{0}，估计值是 \hat{f}(x_{0})
+偏差Bias(\hat{f}(x){0}) = E[\hat{f}(x){0}] - \hat{f}(x){0}</p>
+
+<hr>
+
+<p>ok，接下来再贴翻译稿我觉得好多啦！</p>
+
+<hr>
+
+<p>当我们讨论预测模型的时候，预测误差可以被分解成两个部分：
+- 偏差，即预测值偏离真实值的部分
+- 波动，即预测的稳定性</p>
+
+<p>但是对于一个模型而言，上述两部分是此消彼长的关系，所以就需要对其二者进行权衡。理解这两类误差可以帮助我们诊断模型，从而更好地避免过拟合及欠拟合。</p>
+
+<h1 id="1biasandvariance">1. Bias and Variance</h1>
+
+<p>理解误差组成部分——偏差&amp;波动，分别是如何产生的，能够帮助我们优化数据你和的过程，从而得到更加精确的模型。接下来，我们将从直观概念、几何、数学描述这三个角度定义偏差和波动。</p>
+
+<h2 id="11">1.1 直观上的定义</h2>
+
+<ul>
+<li><p><strong>由偏差导致的误差</strong>：这个误差是由于</p></li>
+<li><p><strong>由波动导致的误差</strong>：</p></li>
+</ul>
+
+<p>注：未完待续</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "machinelearning_002.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
