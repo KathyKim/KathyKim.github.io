@@ -126,7 +126,7 @@ $(document).ready(function() {
             for (var i = 0; i < data.posts.length; ++i)
                 if (path == data.posts[i].path)
                     now = i;
-            var post = data.posts[now];
+            var post = data.pages[now];
             var tmp = post.tags.split(" ");
             var tags = [];
             for (var i = 0; i < tmp.length; ++i)
