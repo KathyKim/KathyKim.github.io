@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+#模型与数据
+在最简单的情形下，一个响应变量Y与p个不同的预测变量X_i, i=1, \dot,p.如果他们二者之间有一定的深层关系$f$，它是固定未知的，表达了X提供给Y的系统信息。此时，观测的数据之间的关系表达成以下形式：	
+Y = f(X) + \varepsilon	
+
+> 实际上，统计学习关于估计f的一系列方法（正是因为「真实的求而不得」，所以才要估计，才要关注估计推断效用）
+
+\hat f 是f的估计
+\hat Y是 Y的估计
+其误差的不可避免性：无法用X中含有的信息来解释\varepsilon，即使Y$的估计\hat Y是通过\hat{Y} = f(x)得到的，\hat Y与 $Y$还是不相等的。\varepsilon中可能包含对$Y$有影响的变量——但我们并未观察或者无法观察，亦或是，这个复杂世界中所不可避免的各种微小因素。
+
+考虑给定的\hat f和给定的观测变量X时，E(Y-\hat{Y})^{2} = E[f(X) + \varepsilon - \hat{f}(x)]^2=\underbrace{[f(X) - \hat{f}(X)]^2} + \underbrace{Var(\varepsilon)}
+
+前半部分是可约误差——可以通过不断寻找更接近真实$f$的\hat f来减少，后半部分是不可约误差——那就好好忽略它吧; )
+
+> 不可约误差提供了预测精度的一个上界，这个上界在实践中是未知的。
+
+上述角度来源于「预测」——关注误差重于一切，实际上是更偏向于工程的角度，这块的发展也由实际需求在不断推动。还有一种角度更关心的则是「推断」——X与Y之间的关系到底是怎样的？Y如何被X以怎样的程度影响...
+
+预测还是推断，这个对于模型的构建非常重要。例如，若为了推断，往往采用的是参数模型，最简单的就是线性模型，变量之间的相互影响一目了然。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h1 id="">模型与数据</h1>
+
+<p>在最简单的情形下，一个响应变量Y与p个不同的预测变量X_i, i=1, \dot,p.如果他们二者之间有一定的深层关系<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-47-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-474" role="math" style="width: 0.561em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.46em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1000.46em, 2.899em, -999.997em); top: -2.538em; left: 0.003em;"><span class="mrow" id="MathJax-Span-475"><span class="mi" id="MathJax-Span-476" style="font-family: STIXGeneral-Italic;">f<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.155em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.309em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.191em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi></math></span></span><script type="math/tex" id="MathJax-Element-47">f</script>，它是固定未知的，表达了X提供给Y的系统信息。此时，观测的数据之间的关系表达成以下形式： <br>
+Y = f(X) + \varepsilon    </p>
+
+<blockquote>
+  <p>实际上，统计学习关于估计f的一系列方法（正是因为「真实的求而不得」，所以才要估计，才要关注估计推断效用）</p>
+</blockquote>
+
+<p>\hat f 是f的估计
+\hat Y是 Y的估计
+其误差的不可避免性：无法用X中含有的信息来解释\varepsilon，即使Y<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-48-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7684;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4F30;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x8BA1;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mover&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x005E;&lt;/mo&gt;&lt;/mover&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x662F;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x901A;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x8FC7;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mover&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x005E;&lt;/mo&gt;&lt;/mover&gt;&lt;/mrow&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5F97;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5230;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7684;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#xFF0C;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mover&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;&amp;#x005E;&lt;/mo&gt;&lt;/mover&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4E0E;&lt;/mo&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-477" role="math" style="width: 16.822em; display: inline-block;"><span style="display: inline-block; position: relative; width: 13.671em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.425em, 1013.671em, 2.899em, -999.997em); top: -2.538em; left: 0.003em;"><span class="mrow" id="MathJax-Span-478"><span class="texatom" id="MathJax-Span-479"><span class="mrow" id="MathJax-Span-480"><span class="mo" id="MathJax-Span-481"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-482"><span class="mrow" id="MathJax-Span-483"><span class="mo" id="MathJax-Span-484"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">估</span></span></span></span><span class="texatom" id="MathJax-Span-485"><span class="mrow" id="MathJax-Span-486"><span class="mo" id="MathJax-Span-487"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">计</span></span></span></span><span class="texatom" id="MathJax-Span-488"><span class="mrow" id="MathJax-Span-489"><span class="munderover" id="MathJax-Span-490"><span style="display: inline-block; position: relative; width: 0.612em; height: 0px;"><span style="position: absolute; clip: rect(3.204em, 1000.612em, 4.169em, -999.997em); top: -4.012em; left: 0.003em;"><span class="mi" id="MathJax-Span-491" style="font-family: STIXGeneral-Italic;">Y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.104em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -4.266em; left: 0.257em;"><span style="height: 0.003em; vertical-align: 0.003em; width: 0.409em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-492" style="font-family: STIXGeneral-Regular;">̂&nbsp;<span style="height: 0.003em; vertical-align: 0.003em; margin-left: -0.658em;"></span></span><span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span></span><span class="texatom" id="MathJax-Span-493"><span class="mrow" id="MathJax-Span-494"><span class="mo" id="MathJax-Span-495"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">是</span></span></span></span><span class="texatom" id="MathJax-Span-496"><span class="mrow" id="MathJax-Span-497"><span class="mo" id="MathJax-Span-498"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">通</span></span></span></span><span class="texatom" id="MathJax-Span-499"><span class="mrow" id="MathJax-Span-500"><span class="mo" id="MathJax-Span-501"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">过</span></span></span></span><span class="texatom" id="MathJax-Span-502"><span class="mrow" id="MathJax-Span-503"><span class="munderover" id="MathJax-Span-504"><span style="display: inline-block; position: relative; width: 0.612em; height: 0px;"><span style="position: absolute; clip: rect(3.204em, 1000.612em, 4.169em, -999.997em); top: -4.012em; left: 0.003em;"><span class="mi" id="MathJax-Span-505" style="font-family: STIXGeneral-Italic;">Y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.104em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -4.266em; left: 0.257em;"><span style="height: 0.003em; vertical-align: 0.003em; width: 0.409em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-506" style="font-family: STIXGeneral-Regular;">̂&nbsp;<span style="height: 0.003em; vertical-align: 0.003em; margin-left: -0.658em;"></span></span><span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span></span><span class="mo" id="MathJax-Span-507" style="font-family: STIXGeneral-Regular; padding-left: 0.307em;">=</span><span class="mi" id="MathJax-Span-508" style="font-family: STIXGeneral-Italic; padding-left: 0.307em;">f<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.155em;"></span></span><span class="mo" id="MathJax-Span-509" style="font-family: STIXGeneral-Regular;">(</span><span class="mi" id="MathJax-Span-510" style="font-family: STIXGeneral-Italic;">x<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-511" style="font-family: STIXGeneral-Regular;">)</span><span class="texatom" id="MathJax-Span-512"><span class="mrow" id="MathJax-Span-513"><span class="mo" id="MathJax-Span-514"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">得</span></span></span></span><span class="texatom" id="MathJax-Span-515"><span class="mrow" id="MathJax-Span-516"><span class="mo" id="MathJax-Span-517"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">到</span></span></span></span><span class="texatom" id="MathJax-Span-518"><span class="mrow" id="MathJax-Span-519"><span class="mo" id="MathJax-Span-520"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-521"><span class="mrow" id="MathJax-Span-522"><span class="mo" id="MathJax-Span-523"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">，</span></span></span></span><span class="texatom" id="MathJax-Span-524"><span class="mrow" id="MathJax-Span-525"><span class="munderover" id="MathJax-Span-526"><span style="display: inline-block; position: relative; width: 0.612em; height: 0px;"><span style="position: absolute; clip: rect(3.204em, 1000.612em, 4.169em, -999.997em); top: -4.012em; left: 0.003em;"><span class="mi" id="MathJax-Span-527" style="font-family: STIXGeneral-Italic;">Y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.104em;"></span></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span><span style="position: absolute; top: -4.266em; left: 0.257em;"><span style="height: 0.003em; vertical-align: 0.003em; width: 0.409em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-528" style="font-family: STIXGeneral-Regular;">̂&nbsp;<span style="height: 0.003em; vertical-align: 0.003em; margin-left: -0.658em;"></span></span><span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span><span style="display: inline-block; width: 0px; height: 4.017em;"></span></span></span></span></span></span><span class="texatom" id="MathJax-Span-529"><span class="mrow" id="MathJax-Span-530"><span class="mo" id="MathJax-Span-531"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">与</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.309em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.566em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>估</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>计</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mover><mi>Y</mi><mo stretchy="false">^</mo></mover></mrow><mrow class="MJX-TeXAtom-ORD"><mo>是</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>通</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>过</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mover><mi>Y</mi><mo stretchy="false">^</mo></mover></mrow><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mrow class="MJX-TeXAtom-ORD"><mo>得</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>到</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mover><mi>Y</mi><mo stretchy="false">^</mo></mover></mrow><mrow class="MJX-TeXAtom-ORD"><mo>与</mo></mrow></math></span></span><script type="math/tex" id="MathJax-Element-48">的估计\hat Y是通过\hat{Y} = f(x)得到的，\hat Y与 </script>Y<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-49-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x8FD8;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x662F;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4E0D;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x76F8;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7B49;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x7684;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x3002;&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;&amp;#x03B5;&lt;/mi&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x4E2D;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x53EF;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x80FD;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5305;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x542B;&lt;/mo&gt;&lt;/mrow&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;mo&gt;&amp;#x5BF9;&lt;/mo&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-532" role="math" style="width: 13.57em; display: inline-block;"><span style="display: inline-block; position: relative; width: 11.029em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.578em, 1011.029em, 2.899em, -999.997em); top: -2.538em; left: 0.003em;"><span class="mrow" id="MathJax-Span-533"><span class="texatom" id="MathJax-Span-534"><span class="mrow" id="MathJax-Span-535"><span class="mo" id="MathJax-Span-536"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">还</span></span></span></span><span class="texatom" id="MathJax-Span-537"><span class="mrow" id="MathJax-Span-538"><span class="mo" id="MathJax-Span-539"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">是</span></span></span></span><span class="texatom" id="MathJax-Span-540"><span class="mrow" id="MathJax-Span-541"><span class="mo" id="MathJax-Span-542"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">不</span></span></span></span><span class="texatom" id="MathJax-Span-543"><span class="mrow" id="MathJax-Span-544"><span class="mo" id="MathJax-Span-545"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">相</span></span></span></span><span class="texatom" id="MathJax-Span-546"><span class="mrow" id="MathJax-Span-547"><span class="mo" id="MathJax-Span-548"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">等</span></span></span></span><span class="texatom" id="MathJax-Span-549"><span class="mrow" id="MathJax-Span-550"><span class="mo" id="MathJax-Span-551"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-552"><span class="mrow" id="MathJax-Span-553"><span class="mo" id="MathJax-Span-554"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">。</span></span></span></span><span class="mi" id="MathJax-Span-555" style="font-family: STIXGeneral-Italic;">ε</span><span class="texatom" id="MathJax-Span-556"><span class="mrow" id="MathJax-Span-557"><span class="mo" id="MathJax-Span-558"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">中</span></span></span></span><span class="texatom" id="MathJax-Span-559"><span class="mrow" id="MathJax-Span-560"><span class="mo" id="MathJax-Span-561"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">可</span></span></span></span><span class="texatom" id="MathJax-Span-562"><span class="mrow" id="MathJax-Span-563"><span class="mo" id="MathJax-Span-564"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">能</span></span></span></span><span class="texatom" id="MathJax-Span-565"><span class="mrow" id="MathJax-Span-566"><span class="mo" id="MathJax-Span-567"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">包</span></span></span></span><span class="texatom" id="MathJax-Span-568"><span class="mrow" id="MathJax-Span-569"><span class="mo" id="MathJax-Span-570"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">含</span></span></span></span><span class="texatom" id="MathJax-Span-571"><span class="mrow" id="MathJax-Span-572"><span class="mo" id="MathJax-Span-573"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 81%; font-style: normal; font-weight: normal;">对</span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.309em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.378em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>还</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>是</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>不</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>相</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>等</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>。</mo></mrow><mi>ε</mi><mrow class="MJX-TeXAtom-ORD"><mo>中</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>可</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>能</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>包</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>含</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>对</mo></mrow></math></span></span><script type="math/tex" id="MathJax-Element-49">还是不相等的。\varepsilon中可能包含对</script>Y$有影响的变量——但我们并未观察或者无法观察，亦或是，这个复杂世界中所不可避免的各种微小因素。</p>
+
+<p>考虑给定的\hat f和给定的观测变量X时，E(Y-\hat{Y})^{2} = E[f(X) + \varepsilon - \hat{f}(x)]^2=\underbrace{[f(X) - \hat{f}(X)]^2} + \underbrace{Var(\varepsilon)}</p>
+
+<p>前半部分是可约误差——可以通过不断寻找更接近真实<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-50-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-574" role="math" style="width: 0.561em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.46em; height: 0px; font-size: 123%;"><span style="position: absolute; clip: rect(1.73em, 1000.46em, 2.899em, -999.997em); top: -2.538em; left: 0.003em;"><span class="mrow" id="MathJax-Span-575"><span class="mi" id="MathJax-Span-576" style="font-family: STIXGeneral-Italic;">f<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.155em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.543em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.309em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.191em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi></math></span></span><script type="math/tex" id="MathJax-Element-50">f</script>的\hat f来减少，后半部分是不可约误差——那就好好忽略它吧; )</p>
+
+<blockquote>
+  <p>不可约误差提供了预测精度的一个上界，这个上界在实践中是未知的。</p>
+</blockquote>
+
+<p>上述角度来源于「预测」——关注误差重于一切，实际上是更偏向于工程的角度，这块的发展也由实际需求在不断推动。还有一种角度更关心的则是「推断」——X与Y之间的关系到底是怎样的？Y如何被X以怎样的程度影响...</p>
+
+<p>预测还是推断，这个对于模型的构建非常重要。例如，若为了推断，往往采用的是参数模型，最简单的就是线性模型，变量之间的相互影响一目了然。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "notes_stat_ISL";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
