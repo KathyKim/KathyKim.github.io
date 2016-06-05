@@ -108,17 +108,17 @@ ps：以下内容并非原创哦！整理自三本参考书：
 
 8. 从MPT到 **Uniformly Most Powerful Test——UMPT**，MPT是在简单原假设Vs简单备择假设的情况下得出的，但是面对复合假设时，如何定义最优？能否找到最优呢？这个问题一下子变得有些复杂。且看之~
 **定义UMPT**
-$\phi(x)$是水平为$\alpha$的检验，如果对于任意一个水平为$\alpha$的检验$\phi_{1}(x)$，都有$E_{\theta_1}[\phi(X)] > E_{\theta_1}(\phi_{1}(X)),  \forall \theta_1 \in \Theta_1$，则$\phi(X)$就是水平为$\alpha$的UMPT.  (「一致性」表现在随着$ \theta_1 \in \Theta_1$不停地变换，「我」都是最好的哦！)
+$\phi(x)$是水平为$\alpha$的检验，如果对于任意一个水平为$\alpha$的检验$\phi_{1}(x)$，都有$E\_{\theta\_1}[\phi(X)] > E\_{\theta\_1}(\phi\_{1}(X)),  \forall \theta\_1 \in \Theta\_1$，则$\phi(X)$就是水平为$\alpha$的UMPT.  (「一致性」表现在随着$ \theta\_1 \in \Theta\_1$不停地变换，「我」都是最好的哦！)
 **借由MPT得到UMPT**
 在一些特殊的情况下，可以通过MPT推导出UMPT。例如：当简单原假设对简单备择假设的检验问题的MPT不依赖于备择假设的具体数值，则可以适当扩大备择假设；当势函数是单调函数时，可以扩大**原假设**。BUT，但是在大部分情况下都无法将复杂假设还原到简单原假设，
-9. **单调似然比**，概率密度族$\{p(x; \theta): \theta \in \Theta\}$关于统计量$T(X)$有单调似然比$\lambda(x) = \frac{p(x;\theta_2)}{p(x;\theta_1)}, \theta_{2} > \theta_1$
+9. **单调似然比**，概率密度族$\{p(x; \theta): \theta \in \Theta\}$关于统计量$T(X)$有单调似然比$\lambda(x) = \frac{p(x;\theta\_2)}{p(x;\theta\_1)}, \theta\_{2} > \theta\_1$
 10. **单参数指数族**，$p(x;\theta) = c(\theta)*exp\{Q(\theta)T(x)\}*h(x)$，常见的有二项分布族、Poisson分布族、有1参数已知的正态分布族
 11. 从一致最优检验到**一致最优势无偏检验 Uniformly Most Powerful Unbiased Test UMPUT**，无偏检验满足：
-$E_{\theta}[\phi(X)] \leqslant \alpha, \forall \theta \in \Theta_{0}$
-$E_{\theta}[\phi(X)] \geqslant \alpha, \forall \theta \in \Theta_{1}$
+$E\_{\theta}[\phi(X)] \leqslant \alpha, \forall \theta \in \Theta\_{0}$
+$E\_{\theta}[\phi(X)] \geqslant \alpha, \forall \theta \in \Theta\_{1}$
 一致最优说的就是:
-$E_{\theta}[\phi(X)] \geqslant E_{\theta}[\phi'(X)] , \forall \theta \in \Theta_{1}$
-12.从UMPUT到**相似检验**，在$\Theta_{0}$和$\Theta_{1}$的公共边界上势函数相等的检验函数是边界相似检验。构造边界相似检验比构造无偏检验更方便（前者束缚更小），如果$\phi(x)$是边界相似检验中的UMPT，则$\phi(x)$是水平为$\alpha$的UMPUT
+$E\_{\theta}[\phi(X)] \geqslant E\_{\theta}[\phi'(X)] , \forall \theta \in \Theta\_{1}$
+12.从UMPUT到**相似检验**，在$\Theta\_{0}$和$\Theta\_{1}$的公共边界上势函数相等的检验函数是边界相似检验。构造边界相似检验比构造无偏检验更方便（前者束缚更小），如果$\phi(x)$是边界相似检验中的UMPT，则$\phi(x)$是水平为$\alpha$的UMPUT
 
 ###1.3 漂亮的定理证明
 
@@ -372,17 +372,17 @@ no.4 $H_{0}: \theta_{1} \leqslant \theta \leqslant \theta_{2} \leftrightarrow H_
 <li><p><strong>最优势检验（Most Powerful Test，MPT）</strong>：在大家犯第一类错误的概率都小于$\alpha$的基础上，犯第二类错误最小的检验函数$\phi(x)$即为最优势检验</p></li>
 <li><p>从MPT到 <strong>Uniformly Most Powerful Test——UMPT</strong>，MPT是在简单原假设Vs简单备择假设的情况下得出的，但是面对复合假设时，如何定义最优？能否找到最优呢？这个问题一下子变得有些复杂。且看之~
 <strong>定义UMPT</strong>
-$\phi(x)$是水平为$\alpha$的检验，如果对于任意一个水平为$\alpha$的检验$\phi<em>{1}(x)$，都有$E</em>{\theta<em>1}[\phi(X)] &gt; E</em>{\theta<em>1}(\phi</em>{1}(X)),  \forall \theta<em>1 \in \Theta</em>1$，则$\phi(X)$就是水平为$\alpha$的UMPT.  (「一致性」表现在随着$ \theta<em>1 \in \Theta</em>1$不停地变换，「我」都是最好的哦！)
+$\phi(x)$是水平为$\alpha$的检验，如果对于任意一个水平为$\alpha$的检验$\phi_{1}(x)$，都有$E_{\theta_1}[\phi(X)] &gt; E_{\theta_1}(\phi_{1}(X)),  \forall \theta_1 \in \Theta_1$，则$\phi(X)$就是水平为$\alpha$的UMPT.  (「一致性」表现在随着$ \theta_1 \in \Theta_1$不停地变换，「我」都是最好的哦！)
 <strong>借由MPT得到UMPT</strong>
 在一些特殊的情况下，可以通过MPT推导出UMPT。例如：当简单原假设对简单备择假设的检验问题的MPT不依赖于备择假设的具体数值，则可以适当扩大备择假设；当势函数是单调函数时，可以扩大<strong>原假设</strong>。BUT，但是在大部分情况下都无法将复杂假设还原到简单原假设，</p></li>
-<li><strong>单调似然比</strong>，概率密度族${p(x; \theta): \theta \in \Theta}$关于统计量$T(X)$有单调似然比$\lambda(x) = \frac{p(x;\theta<em>2)}{p(x;\theta</em>1)}, \theta<em>{2} &gt; \theta</em>1$</li>
+<li><strong>单调似然比</strong>，概率密度族${p(x; \theta): \theta \in \Theta}$关于统计量$T(X)$有单调似然比$\lambda(x) = \frac{p(x;\theta_2)}{p(x;\theta_1)}, \theta_{2} &gt; \theta_1$</li>
 <li><strong>单参数指数族</strong>，$p(x;\theta) = c(\theta)<em>exp{Q(\theta)T(x)}</em>h(x)$，常见的有二项分布族、Poisson分布族、有1参数已知的正态分布族</li>
 <li>从一致最优检验到<strong>一致最优势无偏检验 Uniformly Most Powerful Unbiased Test UMPUT</strong>，无偏检验满足：
-$E<em>{\theta}[\phi(X)] \leqslant \alpha, \forall \theta \in \Theta</em>{0}$
-$E<em>{\theta}[\phi(X)] \geqslant \alpha, \forall \theta \in \Theta</em>{1}$
+$E_{\theta}[\phi(X)] \leqslant \alpha, \forall \theta \in \Theta_{0}$
+$E_{\theta}[\phi(X)] \geqslant \alpha, \forall \theta \in \Theta_{1}$
 一致最优说的就是:
-$E<em>{\theta}[\phi(X)] \geqslant E</em>{\theta}[\phi'(X)] , \forall \theta \in \Theta<em>{1}$
-12.从UMPUT到<strong>相似检验</strong>，在$\Theta</em>{0}$和$\Theta_{1}$的公共边界上势函数相等的检验函数是边界相似检验。构造边界相似检验比构造无偏检验更方便（前者束缚更小），如果$\phi(x)$是边界相似检验中的UMPT，则$\phi(x)$是水平为$\alpha$的UMPUT</li>
+$E_{\theta}[\phi(X)] \geqslant E_{\theta}[\phi'(X)] , \forall \theta \in \Theta_{1}$
+12.从UMPUT到<strong>相似检验</strong>，在$\Theta_{0}$和$\Theta_{1}$的公共边界上势函数相等的检验函数是边界相似检验。构造边界相似检验比构造无偏检验更方便（前者束缚更小），如果$\phi(x)$是边界相似检验中的UMPT，则$\phi(x)$是水平为$\alpha$的UMPUT</li>
 </ol>
 
 <h3 id="13">1.3 漂亮的定理证明</h3>
